@@ -32,5 +32,9 @@
         "psr-4": {
             "lnch\\users\\": ""
         }
+    },
+
+    "extra": {
+        "bootstrap": "lnch\\users\\Bootstrap"
     }
 }
