@@ -1,8 +1,6 @@
 {
-    // package name
     "name": "lnch/yii2-user-control",
 
-    // package type
     "type": "yii2-extension",
 
     "description": "A complete user management system for the Yii2 Framework",
@@ -22,12 +20,10 @@
         }
     ],
 
-    // package dependencies
     "require": {
         "yiisoft/yii2": "*",
     },
 
-    // class autoloading specs
     "autoload": {
         "psr-4": {
             "lnch\\users\\": ""
