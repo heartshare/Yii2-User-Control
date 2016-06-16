@@ -11,6 +11,8 @@
 
 namespace lnch\users;
 
+use Yii;
+
 use yii\authclient\Collection;
 use yii\base\Application;
 use yii\base\BootstrapInterface;
@@ -35,7 +37,7 @@ class Bootstrap implements BootstrapInterface
     {
         /** @var Module $module */
         /** @var \yii\db\ActiveRecord $modelName */
-        if($app->hasModule('user') && ($module = $app->getModule('user')) instanceof Module) 
+        if($app->hasModule('user') && ($module = $app->getModule('user')) instanceof UserControl) 
         {
             $this->_modelMap = array_merge($this->_modelMap, $module->modelMap);
 
@@ -55,6 +57,7 @@ class Bootstrap implements BootstrapInterface
                 // }
             }
 
+            // Creates a 'model' that is an ActiveQuery of it's base class. Clever!
         //     Yii::$container->setSingleton(Finder::className(), [
         //         'userQuery'    => Yii::$container->get('UserQuery'),
         //         'profileQuery' => Yii::$container->get('ProfileQuery'),

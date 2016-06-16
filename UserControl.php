@@ -44,8 +44,9 @@ class UserControl extends Module
  //    public $adminPermission;
  //    /** @var array Mailer configuration */
  //    public $mailer = [];
- //    /** @var array Model map */
- //    public $modelMap = [];
+    
+    /** @var array Model map */
+    public $modelMap = [];
 
     /**
      * @var string The prefix for user module URL.
