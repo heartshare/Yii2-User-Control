@@ -24,6 +24,7 @@ use yii\web\Response;
 // use dektrium\user\models\Account;
 use lnch\users\models\LoginForm;
 // use dektrium\user\models\User;
+use lnch\users\models\UserLog;
 // use dektrium\user\Module;
 // use dektrium\user\traits\AjaxValidationTrait;
 use lnch\users\traits\EventTrait;
@@ -154,6 +155,7 @@ class SecurityController extends Controller
         if($model->load(Yii::$app->getRequest()->post()) && $model->login()) 
         {
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
+            UserLog::log("login-success");
             return $this->redirect(['/']);
         }
 
@@ -175,6 +177,7 @@ class SecurityController extends Controller
         $this->trigger(self::EVENT_BEFORE_LOGOUT, $event);
         Yii::$app->getUser()->logout();
         $this->trigger(self::EVENT_AFTER_LOGOUT, $event);
+        UserLog::log("logout");
 
         return $this->goHome();
     }
