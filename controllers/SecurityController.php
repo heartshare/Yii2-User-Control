@@ -10,14 +10,6 @@
 
 namespace lnch\users\controllers;
 
-// use dektrium\user\Finder;
-// use dektrium\user\models\Account;
-// use dektrium\user\models\LoginForm;
-// use dektrium\user\models\User;
-// use dektrium\user\Module;
-// use dektrium\user\traits\AjaxValidationTrait;
-// use dektrium\user\traits\EventTrait;
-
 use Yii;
 
 use yii\authclient\AuthAction;
@@ -27,6 +19,14 @@ use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
+
+// use dektrium\user\Finder;
+// use dektrium\user\models\Account;
+use lnch\users\models\LoginForm;
+// use dektrium\user\models\User;
+// use dektrium\user\Module;
+// use dektrium\user\traits\AjaxValidationTrait;
+use lnch\users\traits\EventTrait;
 
 /**
  * Controller that manages user authentication process.
@@ -38,7 +38,7 @@ use yii\web\Response;
 class SecurityController extends Controller
 {
     // use AjaxValidationTrait;
-    // use EventTrait;
+    use EventTrait;
 
     /**
      * Event is triggered before logging user in.
@@ -138,18 +138,25 @@ class SecurityController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if(!Yii::$app->user->isGuest) 
+        {
             $this->goHome();
         }
+
         /** @var LoginForm $model */
         $model = Yii::createObject(LoginForm::className());
         $event = $this->getFormEvent($model);
-        $this->performAjaxValidation($model);
+
+        // $this->performAjaxValidation($model);
+
         $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
-        if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
+
+        if($model->load(Yii::$app->getRequest()->post()) && $model->login()) 
+        {
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
-            return $this->goBack();
+            return $this->redirect(['/']);
         }
+
         return $this->render('login', [
             'model'  => $model,
             'module' => $this->module,
@@ -163,13 +170,13 @@ class SecurityController extends Controller
      */
     public function actionLogout()
     {
-        echo "What's up?";
+        $event = $this->getUserEvent(Yii::$app->user->identity);
 
-        // $event = $this->getUserEvent(Yii::$app->user->identity);
-        // $this->trigger(self::EVENT_BEFORE_LOGOUT, $event);
-        // Yii::$app->getUser()->logout();
-        // $this->trigger(self::EVENT_AFTER_LOGOUT, $event);
-        // return $this->goHome();
+        $this->trigger(self::EVENT_BEFORE_LOGOUT, $event);
+        Yii::$app->getUser()->logout();
+        $this->trigger(self::EVENT_AFTER_LOGOUT, $event);
+
+        return $this->goHome();
     }
 
     // /**

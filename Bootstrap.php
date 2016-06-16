@@ -50,20 +50,20 @@ class Bootstrap implements BootstrapInterface
                 $modelName = is_array($definition) ? $definition['class'] : $definition;
                 $module->modelMap[$name] = $modelName;
 
-                // if (in_array($name, ['User', 'Profile', 'Token', 'Account'])) {
-                //     Yii::$container->set($name . 'Query', function () use ($modelName) {
-                //         return $modelName::find();
-                //     });
-                // }
+                if (in_array($name, ['User', 'Profile', 'Token', 'Account'])) {
+                    Yii::$container->set($name . 'Query', function () use ($modelName) {
+                        return $modelName::find();
+                    });
+                }
             }
 
             // Creates a 'model' that is an ActiveQuery of it's base class. Clever!
-        //     Yii::$container->setSingleton(Finder::className(), [
-        //         'userQuery'    => Yii::$container->get('UserQuery'),
-        //         'profileQuery' => Yii::$container->get('ProfileQuery'),
-        //         'tokenQuery'   => Yii::$container->get('TokenQuery'),
-        //         'accountQuery' => Yii::$container->get('AccountQuery'),
-        //     ]);
+            Yii::$container->setSingleton(Finder::className(), [
+                'userQuery'    => Yii::$container->get('UserQuery'),
+                // 'profileQuery' => Yii::$container->get('ProfileQuery'),
+                // 'tokenQuery'   => Yii::$container->get('TokenQuery'),
+                // 'accountQuery' => Yii::$container->get('AccountQuery'),
+            ]);
 
             if($app instanceof ConsoleApplication) 
             {
