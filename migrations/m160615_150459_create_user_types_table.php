@@ -12,7 +12,7 @@ class m160615_150459_create_user_types_table extends Migration
      */
     public function up()
     {
-        $this->createTable('lnch_user_types', [
+        $this->createTable('{{%lnch_user_types}}', [
             'type_id'       => $this->primaryKey(),
             'name'          => $this->string(256)->notNull(),
             'alias'         => $this->string(256),
@@ -25,6 +25,6 @@ class m160615_150459_create_user_types_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('lnch_user_types');
+        $this->dropTable('{{%lnch_user_types}}');
     }
 }

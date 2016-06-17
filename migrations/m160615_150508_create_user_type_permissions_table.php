@@ -12,13 +12,13 @@ class m160615_150508_create_user_type_permissions_table extends Migration
      */
     public function up()
     {
-        $this->createTable('lnch_user_type_permissions', [
+        $this->createTable('{{%lnch_user_type_permissions}}', [
             'group'         => $this->string(256)->notNull(),
             'permission'    => $this->string(256)->notNull(),
             'user_types'    => $this->string(256)
         ]);
 
-        $this->addPrimaryKey('pk-user_type_permissions', 'lnch_user_type_permissions', ['group', 'permission']);
+        $this->addPrimaryKey('pk-user_type_permissions', '{{%lnch_user_type_permissions}}', ['group', 'permission']);
     }
 
     /**
@@ -26,6 +26,6 @@ class m160615_150508_create_user_type_permissions_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('lnch_user_type_permissions');
+        $this->dropTable('{{%lnch_user_type_permissions}}');
     }
 }

@@ -8,8 +8,6 @@
  * file that was distributed with this source code.
  */
 
-	// use dektrium\user\widgets\Connect;
-
 	use yii\helpers\Html;
 	use yii\widgets\ActiveForm;
 
@@ -34,7 +32,7 @@
             <div class="panel-body">
                 <?php $form = ActiveForm::begin([
                     'id'                     => 'login-form',
-                    // 'enableAjaxValidation'   => true,
+                    'enableAjaxValidation'   => true,
                     'enableClientValidation' => false,
                     'validateOnBlur'         => false,
                     'validateOnType'         => false,
@@ -62,10 +60,5 @@
                 <?= Html::a(Yii::t('user', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
             </p>
         <?php endif ?>
-        <?php 
-        	// echo Connect::widget([
-	        //     'baseAuthUrl' => ['/user/security/auth'],
-	        // ]); 
-	    ?>
     </div>
 </div>

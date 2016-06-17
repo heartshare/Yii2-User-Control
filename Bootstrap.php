@@ -62,7 +62,6 @@ class Bootstrap implements BootstrapInterface
                 'userQuery'    => Yii::$container->get('UserQuery'),
                 // 'profileQuery' => Yii::$container->get('ProfileQuery'),
                 // 'tokenQuery'   => Yii::$container->get('TokenQuery'),
-                // 'accountQuery' => Yii::$container->get('AccountQuery'),
             ]);
 
             if($app instanceof ConsoleApplication) 

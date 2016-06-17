@@ -14,7 +14,6 @@ use yii\authclient\ClientInterface;
 use yii\base\Object;
 use yii\db\ActiveQuery;
 
-// use dektrium\user\models\query\AccountQuery;
 // use dektrium\user\models\Token;
 
 /**
@@ -29,9 +28,6 @@ class Finder extends Object
 
     // /** @var ActiveQuery */
     // protected $tokenQuery;
-
-    // /** @var AccountQuery */
-    // protected $accountQuery;
 
     // /** @var ActiveQuery */
     // protected $profileQuery;
@@ -55,23 +51,9 @@ class Finder extends Object
     // /**
     //  * @return ActiveQuery
     //  */
-    // public function getAccountQuery()
-    // {
-    //     return $this->accountQuery;
-    // }
-
-    // /**
-    //  * @return ActiveQuery
-    //  */
     // public function getProfileQuery()
     // {
     //     return $this->profileQuery;
-    // }
-
-    // /** @param ActiveQuery $accountQuery */
-    // public function setAccountQuery(ActiveQuery $accountQuery)
-    // {
-    //     $this->accountQuery = $accountQuery;
     // }
 
     /** @param ActiveQuery $userQuery */
@@ -154,26 +136,6 @@ class Finder extends Object
     {
         return $this->userQuery->where($condition);
     }
-
-    // /**
-    //  * @return AccountQuery
-    //  */
-    // public function findAccount()
-    // {
-    //     return $this->accountQuery;
-    // }
-
-    // /**
-    //  * Finds an account by id.
-    //  *
-    //  * @param int $id
-    //  *
-    //  * @return models\Account|null
-    //  */
-    // public function findAccountById($id)
-    // {
-    //     return $this->accountQuery->where(['id' => $id])->one();
-    // }
 
     // /**
     //  * Finds a token by user id and code.

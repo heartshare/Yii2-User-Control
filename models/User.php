@@ -20,11 +20,11 @@ use yii\web\Application as WebApplication;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
 
-// use dektrium\user\Finder;
-// use dektrium\user\helpers\Password;
-// use dektrium\user\Mailer;
-// use dektrium\user\Module;
-// use dektrium\user\traits\ModuleTrait;
+use lnch\users\Finder;
+use lnch\users\helpers\Password;
+use lnch\users\Mailer;
+use lnch\users\Module;
+use lnch\users\traits\ModuleTrait;
 
 /**
  * User ActiveRecord model.
@@ -60,7 +60,7 @@ use yii\helpers\ArrayHelper;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    // use ModuleTrait;
+    use ModuleTrait;
 
     const BEFORE_CREATE   = 'beforeCreate';
     const AFTER_CREATE    = 'afterCreate';
@@ -80,31 +80,43 @@ class User extends ActiveRecord implements IdentityInterface
     /** @var string Default username regexp */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';
 
-    // /**
-    //  * @return Finder
-    //  * @throws \yii\base\InvalidConfigException
-    //  */
-    // protected function getFinder() 
-    // {
-    //     return Yii::$container->get(Finder::className());
-    // }
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'creation_date',
+                'updatedAtAttribute' => 'last_updated',
+                'value' => gmdate('Y-m-d H:i:s'),
+            ],
+        ];
+    }
 
-    // /**
-    //  * @return Mailer
-    //  * @throws \yii\base\InvalidConfigException
-    //  */
-    // protected function getMailer() 
-    // {
-    //     return Yii::$container->get(Mailer::className());
-    // }
+    /**
+     * @return Finder
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getFinder() 
+    {
+        return Yii::$container->get(Finder::className());
+    }
 
-    // /**
-    //  * @return bool Whether the user is confirmed or not.
-    //  */
-    // public function getIsConfirmed()
-    // {
-    //     return $this->confirmed_at != null;
-    // }
+    /**
+     * @return Mailer
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getMailer() 
+    {
+        return Yii::$container->get(Mailer::className());
+    }
+
+    /**
+     * @return bool Whether the user is confirmed or not.
+     */
+    public function getIsConfirmed()
+    {
+        return $this->confirmation_date != null;
+    }
 
     // /**
     //  * @return bool Whether the user is blocked or not.
@@ -138,20 +150,6 @@ class User extends ActiveRecord implements IdentityInterface
     //     $this->_profile = $profile;
     // }
 
-    // /**
-    //  * @return Account[] Connected accounts ($provider => $account)
-    //  */
-    // public function getAccounts()
-    // {
-    //     $connected = [];
-    //     $accounts  = $this->hasMany($this->module->modelMap['Account'], ['user_id' => 'id'])->all();
-    //     /** @var Account $account */
-    //     foreach ($accounts as $account) {
-    //         $connected[$account->provider] = $account;
-    //     }
-    //     return $connected;
-    // }
-
     /** @inheritdoc */
     public function getId()
     {
@@ -170,19 +168,22 @@ class User extends ActiveRecord implements IdentityInterface
         return '{{%lnch_users}}';
     }
 
-    // /** @inheritdoc */
-    // public function attributeLabels()
-    // {
-    //     return [
-    //         'username'          => Yii::t('user', 'Username'),
-    //         'email'             => Yii::t('user', 'Email'),
-    //         'registration_ip'   => Yii::t('user', 'Registration ip'),
-    //         'unconfirmed_email' => Yii::t('user', 'New email'),
-    //         'password'          => Yii::t('user', 'Password'),
-    //         'created_at'        => Yii::t('user', 'Registration time'),
-    //         'confirmed_at'      => Yii::t('user', 'Confirmation time'),
-    //     ];
-    // }
+    /** @inheritdoc */
+    public function attributeLabels()
+    {
+        return [
+            'username'              => Yii::t('user', 'Username'),
+            'email'                 => Yii::t('user', 'Email'),
+            'signup_ip'             => Yii::t('user', 'Signup IP'),
+            'password'              => Yii::t('user', 'Password'),
+            'creation_date'         => Yii::t('user', 'Registered Date'),
+            'confirmation_date'     => Yii::t('user', 'Confirmed At'),
+            'status'                => Yii::t('user', 'Status'),
+            'user_type'             => Yii::t('user', 'User Type'),
+            'last_updated'          => Yii::t('user', 'Last Updated'),
+            'last_login'            => Yii::t('user', 'Last Login'),
+        ];
+    }
 
     // /** @inheritdoc */
     // public function behaviors()
@@ -192,40 +193,44 @@ class User extends ActiveRecord implements IdentityInterface
     //     ];
     // }
 
-    // /** @inheritdoc */
-    // public function scenarios()
-    // {
-    //     $scenarios = parent::scenarios();
-    //     return ArrayHelper::merge($scenarios, [
-    //         'register' => ['username', 'email', 'password'],
-    //         'connect'  => ['username', 'email'],
-    //         'create'   => ['username', 'email', 'password'],
-    //         'update'   => ['username', 'email', 'password'],
-    //         'settings' => ['username', 'email', 'password'],
-    //     ]);
-    // }
+    /** @inheritdoc */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
 
-    // /** @inheritdoc */
-    // public function rules()
-    // {
-    //     return [
-    //         // username rules
-    //         'usernameRequired' => ['username', 'required', 'on' => ['register', 'create', 'connect', 'update']],
-    //         'usernameMatch'    => ['username', 'match', 'pattern' => static::$usernameRegexp],
-    //         'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
-    //         'usernameUnique'   => ['username', 'unique', 'message' => Yii::t('user', 'This username has already been taken')],
-    //         'usernameTrim'     => ['username', 'trim'],
-    //         // email rules
-    //         'emailRequired' => ['email', 'required', 'on' => ['register', 'connect', 'create', 'update']],
-    //         'emailPattern'  => ['email', 'email'],
-    //         'emailLength'   => ['email', 'string', 'max' => 255],
-    //         'emailUnique'   => ['email', 'unique', 'message' => Yii::t('user', 'This email address has already been taken')],
-    //         'emailTrim'     => ['email', 'trim'],
-    //         // password rules
-    //         'passwordRequired' => ['password', 'required', 'on' => ['register']],
-    //         'passwordLength'   => ['password', 'string', 'min' => 6, 'on' => ['register', 'create']],
-    //     ];
-    // }
+        return ArrayHelper::merge($scenarios, [
+            'register' => ['username', 'email', 'password'],
+            'create'   => ['username', 'email', 'password'],
+            'update'   => ['username', 'email', 'password'],
+            'settings' => ['username', 'email', 'password'],
+        ]);
+    }
+
+    /** @inheritdoc */
+    public function rules()
+    {
+        return [
+            // username rules
+            'usernameRequired' => ['username', 'required', 'on' => ['register', 'create', 'connect', 'update']],
+            'usernameMatch'    => ['username', 'match', 'pattern' => static::$usernameRegexp],
+            'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
+            'usernameUnique'   => ['username', 'unique', 'message' => Yii::t('user', 'This username has already been taken')],
+            'usernameTrim'     => ['username', 'trim'],
+
+            // email rules
+            'emailRequired' => ['email', 'required', 'on' => ['register', 'connect', 'create', 'update']],
+            'emailPattern'  => ['email', 'email'],
+            'emailLength'   => ['email', 'string', 'max' => 255],
+            'emailUnique'   => ['email', 'unique', 'message' => Yii::t('user', 'This email address has already been taken')],
+            'emailTrim'     => ['email', 'trim'],
+
+            // password rules
+            'passwordRequired' => ['password', 'required', 'on' => ['register']],
+            'passwordLength'   => ['password', 'string', 'min' => 6, 'on' => ['register', 'create']],
+
+            // Default values
+        ];
+    }
 
     /** @inheritdoc */
     public function validateAuthKey($authKey)
@@ -254,32 +259,42 @@ class User extends ActiveRecord implements IdentityInterface
     //     return true;
     // }
 
-    // /**
-    //  * This method is used to register new user account. If Module::enableConfirmation is set true, this method
-    //  * will generate new confirmation token and use mailer to send it to the user.
-    //  *
-    //  * @return bool
-    //  */
-    // public function register()
-    // {
-    //     if ($this->getIsNewRecord() == false) {
-    //         throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
-    //     }
-    //     $this->confirmed_at = $this->module->enableConfirmation ? null : time();
-    //     $this->password     = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
-    //     $this->trigger(self::BEFORE_REGISTER);
-    //     if (!$this->save()) {
-    //         return false;
-    //     }
-    //     if ($this->module->enableConfirmation) {
-    //         /** @var Token $token */
-    //         $token = Yii::createObject(['class' => Token::className(), 'type' => Token::TYPE_CONFIRMATION]);
-    //         $token->link('user', $this);
-    //     }
-    //     $this->mailer->sendWelcomeMessage($this, isset($token) ? $token : null);
-    //     $this->trigger(self::AFTER_REGISTER);
-    //     return true;
-    // }
+    /**
+     * This method is used to register new user account. If Module::enableConfirmation is set true, this method
+     * will generate new confirmation token and use mailer to send it to the user.
+     *
+     * @return bool
+     */
+    public function register()
+    {
+        if($this->getIsNewRecord() == false) 
+        {
+            throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
+        }
+
+        $this->confirmation_date    = $this->module->enableConfirmation ? null : time();
+        $this->password             = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
+        
+        $this->trigger(self::BEFORE_REGISTER);
+        
+        if(!$this->save()) 
+        {
+            return false;
+        }
+
+        if($this->module->enableConfirmation) 
+        {
+            /** @var Token $token */
+            $token = Yii::createObject(['class' => Token::className(), 'type' => Token::TYPE_CONFIRMATION]);
+            $token->link('user', $this);
+        }
+
+        $this->mailer->sendWelcomeMessage($this, isset($token) ? $token : null);
+        
+        $this->trigger(self::AFTER_REGISTER);
+        
+        return true;
+    }
 
     // /**
     //  * Attempts user confirmation.
@@ -422,32 +437,43 @@ class User extends ActiveRecord implements IdentityInterface
     //     return $this->username;
     // }
 
-    // /** @inheritdoc */
-    // public function beforeSave($insert)
-    // {
-    //     if ($insert) {
-    //         $this->setAttribute('auth_key', Yii::$app->security->generateRandomString());
-    //         if (Yii::$app instanceof WebApplication) {
-    //             $this->setAttribute('registration_ip', Yii::$app->request->userIP);
-    //         }
-    //     }
-    //     if (!empty($this->password)) {
-    //         $this->setAttribute('password_hash', Password::hash($this->password));
-    //     }
-    //     return parent::beforeSave($insert);
-    // }
+    /** @inheritdoc */
+    public function beforeSave($insert)
+    {
+        if($insert) 
+        {
+            $this->setAttribute('auth_key', Yii::$app->security->generateRandomString());
+            
+            if(Yii::$app instanceof WebApplication) 
+            {
+                $this->setAttribute('signup_ip', Yii::$app->request->userIP);
+            }
+        }
 
-    // /** @inheritdoc */
-    // public function afterSave($insert, $changedAttributes)
-    // {
-    //     parent::afterSave($insert, $changedAttributes);
-    //     if ($insert) {
-    //         if ($this->_profile == null) {
-    //             $this->_profile = Yii::createObject(Profile::className());
-    //         }
-    //         $this->_profile->link('user', $this);
-    //     }
-    // }
+        if(!empty($this->password)) 
+        {
+            $this->setAttribute('password_hash', Password::hash($this->password));
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /** @inheritdoc */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if($insert) 
+        {
+            // // Create the user profile item
+            // if($this->_profile == null) 
+            // {
+            //     $this->_profile = Yii::createObject(Profile::className());
+            // }
+
+            // $this->_profile->link('user', $this);
+        }
+    }
 
     /** @inheritdoc */
     public static function findIdentity($id)

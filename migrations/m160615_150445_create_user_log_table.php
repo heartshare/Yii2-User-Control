@@ -12,7 +12,7 @@ class m160615_150445_create_user_log_table extends Migration
      */
     public function up()
     {
-        $this->createTable('lnch_user_log', [
+        $this->createTable('{{%lnch_user_log}}', [
             'id'                => $this->primaryKey(),
             'user_id'           => $this->integer(11)->notNull(),
             'session_id'        => $this->string(256),
@@ -29,6 +29,6 @@ class m160615_150445_create_user_log_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('lnch_user_log');
+        $this->dropTable('{{%lnch_user_log}}');
     }
 }

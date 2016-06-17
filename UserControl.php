@@ -34,34 +34,32 @@ class UserControl extends Module
     /** @var int The time you want the user will be remembered without asking for credentials. */
     public $rememberFor = 1209600; // two weeks
 
+    /** @var bool Whether to remove password field from registration form. */
+    public $enableGeneratingPassword = false;
     
+    /** @var bool Whether to allow logging in without confirmation. */
+    public $enableUnconfirmedLogin = false;
     
- //    /** @var bool Whether to remove password field from registration form. */
- //    public $enableGeneratingPassword = false;
+    /** @var int Email changing strategy. */
+    public $emailChangeStrategy = self::STRATEGY_DEFAULT;
     
- //    /** @var bool Whether to allow logging in without confirmation. */
- //    public $enableUnconfirmedLogin = false;
-    
- //    /** @var int Email changing strategy. */
- //    public $emailChangeStrategy = self::STRATEGY_DEFAULT;
-    
- //    /** @var int The time before a confirmation token becomes invalid. */
- //    public $confirmWithin = 86400; // 24 hours
+    /** @var int The time before a confirmation token becomes invalid. */
+    public $confirmWithin = 86400; // 24 hours
 
- //    /** @var int The time before a recovery token becomes invalid. */
- //    public $recoverWithin = 21600; // 6 hours
+    /** @var int The time before a recovery token becomes invalid. */
+    public $recoverWithin = 21600; // 6 hours
 
- //    /** @var int Cost parameter used by the Blowfish hash algorithm. */
- //    public $cost = 10;
+    /** @var int Cost parameter used by the Blowfish hash algorithm. */
+    public $cost = 10;
 
- //    /** @var array An array of administrator's usernames. */
- //    public $admins = [];
+    /** @var array An array of administrator's usernames. */
+    public $admins = [];
 	
- //    /** @var string The Administrator permission name. */
- //    public $adminPermission;
+    /** @var string The Administrator permission name. */
+    public $adminPermission;
 
- //    /** @var array Mailer configuration */
- //    public $mailer = [];
+    /** @var array Mailer configuration */
+    public $mailer = [];
 
     /** @var array Model map */
     public $modelMap = [];
@@ -75,12 +73,12 @@ class UserControl extends Module
 
     /** @var array The rules to be used in URL management. */
     public $urlRules = [
-        // '<id:\d+>'                               => 'profile/show',
+        '<id:\d+>'                               => 'profile/show',
         '<action:(login|logout)>'                => 'security/<action>',
-        // '<action:(register|resend)>'             => 'registration/<action>',
-        // 'confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'registration/confirm',
-        // 'forgot'                                 => 'recovery/request',
-        // 'recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'recovery/reset',
-        // 'settings/<action:\w+>'                  => 'settings/<action>'
+        '<action:(register|resend)>'             => 'registration/<action>',
+        'confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'registration/confirm',
+        'forgot'                                 => 'recovery/request',
+        'recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'recovery/reset',
+        'settings/<action:\w+>'                  => 'settings/<action>'
     ];
 }
