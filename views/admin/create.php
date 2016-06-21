@@ -22,11 +22,15 @@
 
 ?>
 
-<?= $this->render('/_flash', [
-    'module' => Yii::$app->getModule('user'),
-]) ?>
+<?php 
+    
+    echo $this->render('/_flash', [
+        'module' => Yii::$app->getModule('user'),
+    ]); 
 
-<?= $this->render('_menu') ?>
+    if($this->context->module->showAdminMenu): echo $this->render('_menu'); endif; 
+
+?>
 
 <div class="row">
     <div class="col-md-3">
@@ -55,8 +59,8 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="alert alert-info">
-                    <?= Yii::t('user', 'Credentials will be sent to the user by email') ?>.
-                    <?= Yii::t('user', 'A password will be generated automatically if not provided') ?>.
+                    <?= Yii::t('user', 'Credentials will be sent to the user by email'); ?>.
+                    <?= Yii::t('user', 'A password will be generated automatically if not provided'); ?>.
                 </div>
                 <?php $form = ActiveForm::begin([
                     'layout' => 'horizontal',
@@ -69,11 +73,11 @@
                     ],
                 ]); ?>
 
-                <?= $this->render('_user', ['form' => $form, 'user' => $user]) ?>
+                <?= $this->render('_user', ['form' => $form, 'user' => $user]); ?>
 
                 <div class="form-group">
                     <div class="col-lg-offset-3 col-lg-9">
-                        <?= Html::submitButton(Yii::t('user', 'Save'), ['class' => 'btn btn-block btn-success']) ?>
+                        <?= Html::submitButton(Yii::t('user', 'Save'), ['class' => 'btn btn-block btn-success']); ?>
                     </div>
                 </div>
 

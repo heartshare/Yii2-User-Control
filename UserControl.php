@@ -51,6 +51,9 @@ class UserControl extends Module
     /** @var int The time before a recovery token becomes invalid. */
     public $recoverWithin = 21600; // 6 hours
 
+    /** @var bool Whether to display the admin menu on admin views */
+    public $showAdminMenu = true;
+
     /** @var int Cost parameter used by the Blowfish hash algorithm. */
     public $cost = 10;
 

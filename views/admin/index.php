@@ -27,146 +27,21 @@
 
 ?>
 
-<?= $this->render('/_flash', [
-    'module' => Yii::$app->getModule('user'),
-]) ?>
+<?php $this->beginContent('@lnch/users/views/admin/__template-index.php'); ?>
 
-<?= $this->render('/admin/_menu') ?>
+<?php 
 
-<?php Pjax::begin() ?>
+    echo $this->render('/_flash', [
+        'module' => Yii::$app->getModule('user'),
+    ]);
 
-<?= GridView::widget([
-    'dataProvider' 	=> $dataProvider,
-    'filterModel'  	=> $searchModel,
-    'layout'  		=> "{items}\n{pager}",
-    'columns' => [
-        'username',
-        'email:email',
-        [
-            'attribute' => 'signup_ip',
-            'value' => function ($model) {
-                return $model->signup_ip == null
-                    ? '<span class="not-set">' . Yii::t('user', '(not set)') . '</span>'
-                    : $model->signup_ip;
-            },
-            'format' => 'html',
-            'filter' => false
-        ],
-        [
-            'attribute' => 'creation_date',
-            'value' => function ($model) {
-                if (extension_loaded('intl')) 
-                {
-                    return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [strtotime($model->creation_date)]);
-                } 
-                else 
-                {
-                    return date('Y-m-d G:i:s', $model->creation_date);
-                }
-            },
-            'filter' => false
-            // 'filter' => DatePicker::widget([
-            //     'model'      => $searchModel,
-            //     'attribute'  => 'creation_date',
-            //     'dateFormat' => 'php:Y-m-d',
-            //     'options' => [
-            //         'class' => 'form-control',
-            //     ],
-            // ]),
-        ],
-        [
-            'attribute' => 'last_login',
-            'value' => function ($model) {
-                if($model->last_login == NULL)
-                {
-                    return "-";
-                }
-                
-                if(extension_loaded('intl')) 
-                {
-                    return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [strtotime($model->last_login)]);
-                } 
-                else 
-                {
-                    return date('Y-m-d G:i:s', $model->last_login);
-                }
-            },
-            'filter' => false
-            // 'filter' => DatePicker::widget([
-            //     'model'      => $searchModel,
-            //     'attribute'  => 'creation_date',
-            //     'dateFormat' => 'php:Y-m-d',
-            //     'options' => [
-            //         'class' => 'form-control',
-            //     ],
-            // ]),
-        ],
-        [
-            'header' => 'Type',
-            'attribute' => 'user_type',
-            'value' => function($model) {
-                switch($model->user_type)
-                {
-                    case 10:
-                        return 'User';
-                    case 20:
-                        return 'Moderator';
-                    case 30:
-                        return 'Admin';
-                    case 40:
-                        return 'Founder';
-                    default:
-                        return ' - ';
-                }
-            },
-            'format' => 'raw',
-            'filter' => [
-                10 => 'User', 
-                20 => 'Moderator', 
-                30 => 'Admin', 
-                40 => 'Founder'
-            ]
-        ],
-        [
-            'header' => Yii::t('user', 'Confirmation'),
-            'value' => function ($model) {
-                if ($model->isConfirmed) {
-                    return '<div class="text-center"><span class="text-success">' . Yii::t('user', 'Confirmed') . '</span></div>';
-                } else {
-                    return Html::a(Yii::t('user', 'Confirm'), ['confirm', 'id' => $model->id], [
-                        'class' => 'btn btn-xs btn-success btn-block',
-                        'data-method' => 'post',
-                        'data-confirm' => Yii::t('user', 'Are you sure you want to confirm this user?'),
-                    ]);
-                }
-            },
-            'format' => 'raw',
-            'visible' => Yii::$app->getModule('user')->enableConfirmation,
-        ],
-        [
-            'header' => Yii::t('user', 'Ban status'),
-            'value' => function ($model) {
-                if ($model->isBanned) {
-                    return Html::a(Yii::t('user', 'Unban'), ['ban', 'id' => $model->id], [
-                        'class' => 'btn btn-xs btn-success btn-block',
-                        'data-method' => 'post',
-                        'data-confirm' => Yii::t('user', 'Are you sure you want to unban this user?'),
-                    ]);
-                } else {
-                    return Html::a(Yii::t('user', 'Ban'), ['ban', 'id' => $model->id], [
-                        'class' => 'btn btn-xs btn-danger btn-block',
-                        'data-method' => 'post',
-                        'data-confirm' => Yii::t('user', 'Are you sure you want to ban this user?'),
-                    ]);
-                }
-            },
-            'format' => 'raw',
-        ],
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template' => '{update} {delete}',
-        ],
-    ],
-]); ?>
+    if($this->context->module->showAdminMenu): echo $this->render('/admin/_menu'); endif;
 
-<?php Pjax::end() ?>
+    echo $this->render('_index-list', [
+        'dataProvider' => $dataProvider,
+        'searchModel'  => $searchModel,
+    ]);
+    
+?>
+
+<?php $this->endContent(); ?>

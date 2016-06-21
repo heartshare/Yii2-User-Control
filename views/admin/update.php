@@ -20,11 +20,13 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => [
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<?= $this->render('/_flash', [
-    'module' => Yii::$app->getModule('user'),
-]) ?>
+<?php 
+    echo $this->render('/_flash', [
+        'module' => Yii::$app->getModule('user'),
+    ]); 
+?>
 
-<?= $this->render('_menu') ?>
+<?php if($this->context->module->showAdminMenu): echo $this->render('_menu'); endif; ?>
 
 <div class="row">
     <div class="col-md-3">
