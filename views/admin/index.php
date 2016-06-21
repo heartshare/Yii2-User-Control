@@ -50,16 +50,21 @@
                     : $model->signup_ip;
             },
             'format' => 'html',
+            'filter' => false
         ],
         [
             'attribute' => 'creation_date',
             'value' => function ($model) {
-                if (extension_loaded('intl')) {
-                    return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [$model->creation_date]);
-                } else {
+                if (extension_loaded('intl')) 
+                {
+                    return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [strtotime($model->creation_date)]);
+                } 
+                else 
+                {
                     return date('Y-m-d G:i:s', $model->creation_date);
                 }
             },
+            'filter' => false
             // 'filter' => DatePicker::widget([
             //     'model'      => $searchModel,
             //     'attribute'  => 'creation_date',
@@ -68,6 +73,59 @@
             //         'class' => 'form-control',
             //     ],
             // ]),
+        ],
+        [
+            'attribute' => 'last_login',
+            'value' => function ($model) {
+                if($model->last_login == NULL)
+                {
+                    return "-";
+                }
+                
+                if(extension_loaded('intl')) 
+                {
+                    return Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [strtotime($model->last_login)]);
+                } 
+                else 
+                {
+                    return date('Y-m-d G:i:s', $model->last_login);
+                }
+            },
+            'filter' => false
+            // 'filter' => DatePicker::widget([
+            //     'model'      => $searchModel,
+            //     'attribute'  => 'creation_date',
+            //     'dateFormat' => 'php:Y-m-d',
+            //     'options' => [
+            //         'class' => 'form-control',
+            //     ],
+            // ]),
+        ],
+        [
+            'header' => 'Type',
+            'attribute' => 'user_type',
+            'value' => function($model) {
+                switch($model->user_type)
+                {
+                    case 10:
+                        return 'User';
+                    case 20:
+                        return 'Moderator';
+                    case 30:
+                        return 'Admin';
+                    case 40:
+                        return 'Founder';
+                    default:
+                        return ' - ';
+                }
+            },
+            'format' => 'raw',
+            'filter' => [
+                10 => 'User', 
+                20 => 'Moderator', 
+                30 => 'Admin', 
+                40 => 'Founder'
+            ]
         ],
         [
             'header' => Yii::t('user', 'Confirmation'),

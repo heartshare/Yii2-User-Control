@@ -18,7 +18,7 @@
 <table class="table">
     <tr>
         <td><strong><?= Yii::t('user', 'Registration time') ?>:</strong></td>
-        <td><?= Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [$user->creation_date]) ?></td>
+        <td><?= Yii::t('user', '{0, date, MMMM dd, YYYY HH:mm}', [strtotime($user->creation_date)]) ?></td>
     </tr>
     <?php if ($user->signup_ip !== null): ?>
         <tr>
@@ -29,7 +29,7 @@
     <tr>
         <td><strong><?= Yii::t('user', 'Confirmation status') ?>:</strong></td>
         <?php if ($user->status != "P"): ?>
-            <td class="text-success"><?= Yii::t('user', 'Confirmed at {0, date, MMMM dd, YYYY HH:mm}', [$user->confirmation_date]) ?></td>
+            <td class="text-success"><?= Yii::t('user', 'Confirmed at {0, date, MMMM dd, YYYY HH:mm}', [strtotime($user->confirmation_date)]) ?></td>
         <?php else: ?>
             <td class="text-danger"><?= Yii::t('user', 'Unconfirmed') ?></td>
         <?php endif ?>

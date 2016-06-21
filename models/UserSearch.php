@@ -34,6 +34,9 @@ class UserSearch extends Model
     /** @var string */
     public $signup_ip;
 
+    /** @var string */
+    public $user_type;
+
     /** @var Finder */
     protected $finder;
 
@@ -51,7 +54,7 @@ class UserSearch extends Model
     public function rules()
     {
         return [
-            'fieldsSafe' => [['username', 'email', 'signup_ip', 'creation_date'], 'safe'],
+            'fieldsSafe' => [['username', 'email', 'signup_ip', 'creation_date', 'user_type'], 'safe'],
             'createdDefault' => ['creation_date', 'default', 'value' => null],
         ];
     }
@@ -93,7 +96,8 @@ class UserSearch extends Model
         
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['signup_ip' => $this->signup_ip]);
+            ->andFilterWhere(['signup_ip' => $this->signup_ip])
+            ->andFilterWhere(['user_type' => $this->user_type]);
         
         return $dataProvider;
     }

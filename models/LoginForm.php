@@ -122,8 +122,17 @@ class LoginForm extends Model
     {
         if($this->validate()) 
         {
-            UserLog::log("login-success");
-            return Yii::$app->getUser()->login($this->user, $this->rememberMe ? $this->module->rememberFor : 0);
+            if(Yii::$app->getUser()->login($this->user, $this->rememberMe ? $this->module->rememberFor : 0))
+            {
+                UserLog::log("login-success");
+                $this->user->last_login = gmdate("Y-m-d H:i:s");
+                $this->user->save();
+                return true;
+            }
+            else 
+            {
+                return false;
+            }
         } 
         else 
         {
