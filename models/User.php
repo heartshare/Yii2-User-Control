@@ -126,13 +126,29 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->status == 'B';
     }
 
-    // /**
-    //  * @return bool Whether the user is an admin or not.
-    //  */
-    // public function getIsAdmin()
-    // {
-    //     return (\Yii::$app->getAuthManager() && $this->module->adminPermission  ? \Yii::$app->user->can($this->module->adminPermission) : false) || in_array($this->username, $this->module->admins);
-    // }
+    /**
+     * @return bool Whether the user is a moderator or not.
+     */
+    public function getIsModerator()
+    {
+        return $this->user_type >= 20;
+    }
+
+    /**
+     * @return bool Whether the user is an admin or not.
+     */
+    public function getIsAdmin()
+    {
+        return $this->user_type >= 30;
+    }
+
+    /**
+     * @return bool Whether the user is a founder or not.
+     */
+    public function getIsFounder()
+    {
+        return $this->user_type == 40;
+    }
 
     // /**
     //  * @return \yii\db\ActiveQuery
@@ -238,26 +254,34 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->getAttribute('auth_key') === $authKey;
     }
 
-    // /**
-    //  * Creates new user account. It generates password if it is not provided by user.
-    //  *
-    //  * @return bool
-    //  */
-    // public function create()
-    // {
-    //     if ($this->getIsNewRecord() == false) {
-    //         throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
-    //     }
-    //     $this->confirmed_at = time();
-    //     $this->password = $this->password == null ? Password::generate(8) : $this->password;
-    //     $this->trigger(self::BEFORE_CREATE);
-    //     if (!$this->save()) {
-    //         return false;
-    //     }
-    //     $this->mailer->sendWelcomeMessage($this, null, true);
-    //     $this->trigger(self::AFTER_CREATE);
-    //     return true;
-    // }
+    /**
+     * Creates new user account. It generates password if it is not provided by user.
+     *
+     * @return bool
+     */
+    public function create()
+    {
+        if($this->getIsNewRecord() == false) 
+        {
+            throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
+        }
+
+        $this->confirmation_date = gmdate("Y-m-d H:i:s");
+        $this->password = $this->password == null ? Password::generate(8) : $this->password;
+        
+        $this->trigger(self::BEFORE_CREATE);
+
+        if(!$this->save()) 
+        {
+            return false;
+        }
+
+        $this->mailer->sendWelcomeMessage($this, null, true);
+
+        $this->trigger(self::AFTER_CREATE);
+
+        return true;
+    }
 
     /**
      * This method is used to register new user account. If Module::enableConfirmation is set true, this method
@@ -402,24 +426,28 @@ class User extends ActiveRecord implements IdentityInterface
         return (bool)$this->updateAttributes(['password_hash' => Password::hash($password)]);
     }
 
-    // /**
-    //  * Blocks the user by setting 'blocked_at' field to current time and regenerates auth_key.
-    //  */
-    // public function block()
-    // {
-    //     return (bool)$this->updateAttributes([
-    //         'blocked_at' => time(),
-    //         'auth_key'   => Yii::$app->security->generateRandomString(),
-    //     ]);
-    // }
+    /**
+     * Blocks the user by setting 'blocked_at' field to current time and regenerates auth_key.
+     */
+    public function block()
+    {
+        return (bool)$this->updateAttributes([
+            // 'blocked_at' => time(),
+            'auth_key'   => Yii::$app->security->generateRandomString(),
+            'status'     => 'B'
+        ]);
+    }
 
-    // /**
-    //  * UnBlocks the user by setting 'blocked_at' field to null.
-    //  */
-    // public function unblock()
-    // {
-    //     return (bool)$this->updateAttributes(['blocked_at' => null]);
-    // }
+    /**
+     * UnBlocks the user by setting 'blocked_at' field to null.
+     */
+    public function unblock()
+    {
+        return (bool)$this->updateAttributes([
+            // 'blocked_at' => null
+            'status' => 'A'
+        ]);
+    }
 
     public function log($action, $message = '')
     {

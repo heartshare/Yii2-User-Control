@@ -93,13 +93,6 @@ class Bootstrap implements BootstrapInterface
                 $rule = Yii::createObject($configUrlRule);
                 
                 $app->urlManager->addRules([$rule], false);
-
-                // if(!$app->has('authClientCollection')) 
-                // {
-                //     $app->set('authClientCollection', [
-                //         'class' => Collection::className(),
-                //     ]);
-                // }
             }
 
             if(!isset($app->get('i18n')->translations['user*'])) 
