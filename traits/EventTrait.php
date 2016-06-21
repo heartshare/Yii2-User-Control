@@ -13,16 +13,13 @@ namespace lnch\users\traits;
 use yii\authclient\ClientInterface;
 use yii\base\Model;
 
-// use lnch\users\events\AuthEvent;
-// use lnch\users\events\ConnectEvent;
 use lnch\users\events\FormEvent;
 // use lnch\users\events\ProfileEvent;
-// use lnch\users\events\ResetPasswordEvent;
+use lnch\users\events\ResetPasswordEvent;
 use lnch\users\events\UserEvent;
-// use lnch\users\models\Account;
 // use lnch\users\models\Profile;
-// use lnch\users\models\RecoveryForm;
-// use lnch\users\models\Token;
+use lnch\users\models\RecoveryForm;
+use lnch\users\models\Token;
 use lnch\users\models\User;
 
 /**
@@ -82,14 +79,14 @@ trait EventTrait
     //     return \Yii::createObject(['class' => AuthEvent::className(), 'account' => $account, 'client' => $client]);
     // }
 
-    // /**
-    //  * @param  Token        $token
-    //  * @param  RecoveryForm $form
-    //  * @return ResetPasswordEvent
-    //  * @throws \yii\base\InvalidConfigException
-    //  */
-    // protected function getResetPasswordEvent(Token $token = null, RecoveryForm $form = null)
-    // {
-    //     return \Yii::createObject(['class' => ResetPasswordEvent::className(), 'token' => $token, 'form' => $form]);
-    // }
+    /**
+     * @param  Token        $token
+     * @param  RecoveryForm $form
+     * @return ResetPasswordEvent
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getResetPasswordEvent(Token $token = null, RecoveryForm $form = null)
+    {
+        return \Yii::createObject(['class' => ResetPasswordEvent::className(), 'token' => $token, 'form' => $form]);
+    }
 }

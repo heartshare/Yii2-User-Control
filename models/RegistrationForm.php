@@ -120,6 +120,8 @@ class RegistrationForm extends Model
             return false;
         }
 
+        UserLog::log("register");
+        
         Yii::$app->session->setFlash(
             'info',
             Yii::t('user', 'Your account has been created and a message with further instructions has been sent to your email')

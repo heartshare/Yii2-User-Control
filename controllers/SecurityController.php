@@ -17,6 +17,7 @@ use yii\web\Controller;
 use yii\web\Response;
 
 use lnch\users\Finder;
+use lnch\users\behaviours\UserCheckFilter;
 use lnch\users\models\LoginForm;
 use lnch\users\models\UserLog;
 use lnch\users\UserControl;
@@ -85,6 +86,10 @@ class SecurityController extends Controller
                     ['allow' => true, 'actions' => ['login', 'logout'], 'roles' => ['@']],
                 ],
             ],
+
+            'userCheck' => [
+                'class' => UserCheckFilter::className()
+            ]
         ];
     }
 
@@ -111,7 +116,6 @@ class SecurityController extends Controller
         if($model->load(Yii::$app->getRequest()->post()) && $model->login()) 
         {
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
-            UserLog::log("login-success");
             return $this->redirect(['/']);
         }
 

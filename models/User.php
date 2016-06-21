@@ -115,16 +115,16 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getIsConfirmed()
     {
-        return $this->confirmation_date != null;
+        return $this->confirmation_date != null && $this->status != 'P';
     }
 
-    // /**
-    //  * @return bool Whether the user is blocked or not.
-    //  */
-    // public function getIsBlocked()
-    // {
-    //     return $this->blocked_at != null;
-    // }
+    /**
+     * @return bool Whether the user is blocked or not.
+     */
+    public function getIsBanned()
+    {
+        return $this->status == 'B';
+    }
 
     // /**
     //  * @return bool Whether the user is an admin or not.
@@ -296,31 +296,44 @@ class User extends ActiveRecord implements IdentityInterface
         return true;
     }
 
-    // /**
-    //  * Attempts user confirmation.
-    //  *
-    //  * @param string $code Confirmation code.
-    //  *
-    //  * @return boolean
-    //  */
-    // public function attemptConfirmation($code)
-    // {
-    //     $token = $this->finder->findTokenByParams($this->id, $code, Token::TYPE_CONFIRMATION);
-    //     if ($token instanceof Token && !$token->isExpired) {
-    //         $token->delete();
-    //         if (($success = $this->confirm())) {
-    //             Yii::$app->user->login($this, $this->module->rememberFor);
-    //             $message = Yii::t('user', 'Thank you, registration is now complete.');
-    //         } else {
-    //             $message = Yii::t('user', 'Something went wrong and your account has not been confirmed.');
-    //         }
-    //     } else {
-    //         $success = false;
-    //         $message = Yii::t('user', 'The confirmation link is invalid or expired. Please try requesting a new one.');
-    //     }
-    //     Yii::$app->session->setFlash($success ? 'success' : 'danger', $message);
-    //     return $success;
-    // }
+    /**
+     * Attempts user confirmation.
+     *
+     * @param string $code Confirmation code.
+     *
+     * @return boolean
+     */
+    public function attemptConfirmation($code)
+    {
+        $token = $this->finder->findTokenByParams($this->id, $code, Token::TYPE_CONFIRMATION);
+
+        if($token instanceof Token && !$token->isExpired) 
+        {
+            $token->delete();
+
+            if( ( $success = $this->confirm() ) ) 
+            {
+                Yii::$app->user->login($this, $this->module->rememberFor);
+                $message = Yii::t('user', 'Thank you, registration is now complete.');
+                UserLog::log("confirm-success");
+            } 
+            else 
+            {
+                $message = Yii::t('user', 'Something went wrong and your account has not been confirmed.');
+                UserLog::log("confirm-fail", "", $this);
+            }
+        } 
+        else 
+        {
+            $success = false;
+            $message = Yii::t('user', 'The confirmation link is invalid or expired. Please try requesting a new one.');
+            UserLog::log("confirm-expired", "", $this);
+        }
+
+        Yii::$app->session->setFlash($success ? 'success' : 'danger', $message);
+
+        return $success;
+    }
 
     // /**
     //  * This method attempts changing user email. If user's "unconfirmed_email" field is empty is returns false, else if
@@ -369,25 +382,25 @@ class User extends ActiveRecord implements IdentityInterface
     //     }
     // }
 
-    // /**
-    //  * Confirms the user by setting 'confirmed_at' field to current time.
-    //  */
-    // public function confirm()
-    // {
-    //     return (bool)$this->updateAttributes(['confirmed_at' => time()]);
-    // }
+    /**
+     * Confirms the user by setting 'confirmed_at' field to current time.
+     */
+    public function confirm()
+    {
+        return (bool)$this->updateAttributes(['confirmation_date' => gmdate('Y-m-d H:i:s'), 'status' => 'A']);
+    }
 
-    // /**
-    //  * Resets password.
-    //  *
-    //  * @param string $password
-    //  *
-    //  * @return bool
-    //  */
-    // public function resetPassword($password)
-    // {
-    //     return (bool)$this->updateAttributes(['password_hash' => Password::hash($password)]);
-    // }
+    /**
+     * Resets password.
+     *
+     * @param string $password
+     *
+     * @return bool
+     */
+    public function resetPassword($password)
+    {
+        return (bool)$this->updateAttributes(['password_hash' => Password::hash($password)]);
+    }
 
     // /**
     //  * Blocks the user by setting 'blocked_at' field to current time and regenerates auth_key.
@@ -407,6 +420,11 @@ class User extends ActiveRecord implements IdentityInterface
     // {
     //     return (bool)$this->updateAttributes(['blocked_at' => null]);
     // }
+
+    public function log($action, $message = '')
+    {
+        UserLog::log($action, $message);
+    }
 
     // /**
     //  * Generates new username based on email address, or creates new username

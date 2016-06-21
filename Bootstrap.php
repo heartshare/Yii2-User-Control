@@ -29,7 +29,8 @@ class Bootstrap implements BootstrapInterface
 {
     /** @var array Model's map */
     private $_modelMap = [
-        'User'             => 'lnch\users\models\User',
+        'User'          => 'lnch\users\models\User',
+        'Token'         => 'lnch\users\models\Token',             
     ];
 
     /** @inheritdoc */
@@ -61,7 +62,7 @@ class Bootstrap implements BootstrapInterface
             Yii::$container->setSingleton(Finder::className(), [
                 'userQuery'    => Yii::$container->get('UserQuery'),
                 // 'profileQuery' => Yii::$container->get('ProfileQuery'),
-                // 'tokenQuery'   => Yii::$container->get('TokenQuery'),
+                'tokenQuery'   => Yii::$container->get('TokenQuery'),
             ]);
 
             if($app instanceof ConsoleApplication) 
@@ -100,15 +101,15 @@ class Bootstrap implements BootstrapInterface
                 //     ]);
                 // }
             }
-            // if (!isset($app->get('i18n')->translations['user*'])) {
-            //     $app->get('i18n')->translations['user*'] = [
-            //         'class'    => PhpMessageSource::className(),
-            //         'basePath' => __DIR__ . '/messages',
-            //         'sourceLanguage' => 'en-US'
-            //     ];
-            // }
 
-            // Yii::$container->set('dektrium\user\Mailer', $module->mailer);
+            if(!isset($app->get('i18n')->translations['user*'])) 
+            {
+                $app->get('i18n')->translations['user*'] = [
+                    'class'    => PhpMessageSource::className(),
+                    'basePath' => __DIR__ . '/messages',
+                    'sourceLanguage' => 'en-GB'
+                ];
+            }
 
         }
 

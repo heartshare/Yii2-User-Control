@@ -62,7 +62,7 @@ class UserLog extends ActiveRecord
 	    ];
 	}
 
-	public static function log($action, $message = '')
+	public static function log($action, $message = '', $user = NULL)
 	{
 		$log = Yii::createObject(self::className());
 		
@@ -70,7 +70,20 @@ class UserLog extends ActiveRecord
 		$log->message = $message;
 
 		$log->session_id = Yii::$app->session->id;
-		$log->user_id = Yii::$app->user->identity->id;
+
+		if($user)
+		{
+			$log->user_id = $user->id;
+		}
+		else if(!Yii::$app->user->isGuest)
+		{
+			$log->user_id = Yii::$app->user->identity->id;	
+		}
+		else 
+		{
+			$log->user_id = 0;
+		}		
+
 		$log->user_ip = Yii::$app->request->userIP;
 		$log->http_user_agent = Yii::$app->request->userAgent;
 

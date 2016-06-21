@@ -6,6 +6,8 @@ use Yii;
 
 use yii\base\Module;
 
+use lnch\users\models\User;
+
 class UserControl extends Module
 {
     const VERSION = '0.0.1';

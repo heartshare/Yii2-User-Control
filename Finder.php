@@ -26,8 +26,8 @@ class Finder extends Object
     /** @var ActiveQuery */
     protected $userQuery;
 
-    // /** @var ActiveQuery */
-    // protected $tokenQuery;
+    /** @var ActiveQuery */
+    protected $tokenQuery;
 
     // /** @var ActiveQuery */
     // protected $profileQuery;
@@ -40,13 +40,13 @@ class Finder extends Object
         return $this->userQuery;
     }
 
-    // /**
-    //  * @return ActiveQuery
-    //  */
-    // public function getTokenQuery()
-    // {
-    //     return $this->tokenQuery;
-    // }
+    /**
+     * @return ActiveQuery
+     */
+    public function getTokenQuery()
+    {
+        return $this->tokenQuery;
+    }
 
     // /**
     //  * @return ActiveQuery
@@ -62,11 +62,11 @@ class Finder extends Object
         $this->userQuery = $userQuery;
     }
 
-    // /** @param ActiveQuery $tokenQuery */
-    // public function setTokenQuery(ActiveQuery $tokenQuery)
-    // {
-    //     $this->tokenQuery = $tokenQuery;
-    // }
+    /** @param ActiveQuery $tokenQuery */
+    public function setTokenQuery(ActiveQuery $tokenQuery)
+    {
+        $this->tokenQuery = $tokenQuery;
+    }
 
     // * @param ActiveQuery $profileQuery 
     // public function setProfileQuery(ActiveQuery $profileQuery)
@@ -137,35 +137,35 @@ class Finder extends Object
         return $this->userQuery->where($condition);
     }
 
-    // /**
-    //  * Finds a token by user id and code.
-    //  *
-    //  * @param mixed $condition
-    //  *
-    //  * @return ActiveQuery
-    //  */
-    // public function findToken($condition)
-    // {
-    //     return $this->tokenQuery->where($condition);
-    // }
+    /**
+     * Finds a token by user id and code.
+     *
+     * @param mixed $condition
+     *
+     * @return ActiveQuery
+     */
+    public function findToken($condition)
+    {
+        return $this->tokenQuery->where($condition);
+    }
 
-    // /**
-    //  * Finds a token by params.
-    //  *
-    //  * @param integer $userId
-    //  * @param string  $code
-    //  * @param integer $type
-    //  *
-    //  * @return Token
-    //  */
-    // public function findTokenByParams($userId, $code, $type)
-    // {
-    //     return $this->findToken([
-    //         'user_id' => $userId,
-    //         'code'    => $code,
-    //         'type'    => $type,
-    //     ])->one();
-    // }
+    /**
+     * Finds a token by params.
+     *
+     * @param integer $userId
+     * @param string  $code
+     * @param integer $type
+     *
+     * @return Token
+     */
+    public function findTokenByParams($userId, $code, $type)
+    {
+        return $this->findToken([
+            'user_id' => $userId,
+            'code'    => $code,
+            'type'    => $type,
+        ])->one();
+    }
 
     // /**
     //  * Finds a profile by user id.
