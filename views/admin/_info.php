@@ -35,11 +35,12 @@
         <?php endif ?>
     </tr>
     <tr>
-        <td><strong><?= Yii::t('user', 'Block status') ?>:</strong></td>
+        <td><strong><?= Yii::t('user', 'Ban status') ?>:</strong></td>
         <?php if ($user->isBanned): ?>
-            <td class="text-danger"><?= Yii::t('user', 'Blocked at {0, date, MMMM dd, YYYY HH:mm}', [$user->last_update]) ?></td>
+            <!-- <td class="text-danger"><?//= Yii::t('user', 'Banned at {0, date, MMMM dd, YYYY HH:mm}', [$user->last_updated]) ?></td> -->
+            <td class="text-danger"><?= Yii::t('user', 'User banned'); ?></td>
         <?php else: ?>
-            <td class="text-success"><?= Yii::t('user', 'Not blocked') ?></td>
+            <td class="text-success"><?= Yii::t('user', 'Not banned') ?></td>
         <?php endif ?>
     </tr>
 </table>

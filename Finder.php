@@ -14,8 +14,6 @@ use yii\authclient\ClientInterface;
 use yii\base\Object;
 use yii\db\ActiveQuery;
 
-// use dektrium\user\models\Token;
-
 /**
  * Finder provides some useful methods for finding active record models.
  *
@@ -29,8 +27,8 @@ class Finder extends Object
     /** @var ActiveQuery */
     protected $tokenQuery;
 
-    // /** @var ActiveQuery */
-    // protected $profileQuery;
+    /** @var ActiveQuery */
+    protected $profileQuery;
 
     /**
      * @return ActiveQuery
@@ -48,13 +46,13 @@ class Finder extends Object
         return $this->tokenQuery;
     }
 
-    // /**
-    //  * @return ActiveQuery
-    //  */
-    // public function getProfileQuery()
-    // {
-    //     return $this->profileQuery;
-    // }
+    /**
+     * @return ActiveQuery
+     */
+    public function getProfileQuery()
+    {
+        return $this->profileQuery;
+    }
 
     /** @param ActiveQuery $userQuery */
     public function setUserQuery(ActiveQuery $userQuery)
@@ -68,11 +66,11 @@ class Finder extends Object
         $this->tokenQuery = $tokenQuery;
     }
 
-    // * @param ActiveQuery $profileQuery 
-    // public function setProfileQuery(ActiveQuery $profileQuery)
-    // {
-    //     $this->profileQuery = $profileQuery;
-    // }
+    /** @param ActiveQuery $profileQuery */
+    public function setProfileQuery(ActiveQuery $profileQuery)
+    {
+        $this->profileQuery = $profileQuery;
+    }
 
     /**
      * Finds a user by the given id.
@@ -119,9 +117,11 @@ class Finder extends Object
      */
     public function findUserByUsernameOrEmail($usernameOrEmail)
     {
-        if (filter_var($usernameOrEmail, FILTER_VALIDATE_EMAIL)) {
+        if(filter_var($usernameOrEmail, FILTER_VALIDATE_EMAIL)) 
+        {
             return $this->findUserByEmail($usernameOrEmail);
         }
+
         return $this->findUserByUsername($usernameOrEmail);
     }
 
@@ -167,27 +167,27 @@ class Finder extends Object
         ])->one();
     }
 
-    // /**
-    //  * Finds a profile by user id.
-    //  *
-    //  * @param int $id
-    //  *
-    //  * @return null|models\Profile
-    //  */
-    // public function findProfileById($id)
-    // {
-    //     return $this->findProfile(['user_id' => $id])->one();
-    // }
+    /**
+     * Finds a profile by user id.
+     *
+     * @param int $id
+     *
+     * @return null|models\Profile
+     */
+    public function findProfileById($id)
+    {
+        return $this->findProfile(['user_id' => $id])->one();
+    }
 
-    // /**
-    //  * Finds a profile.
-    //  *
-    //  * @param mixed $condition
-    //  *
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function findProfile($condition)
-    // {
-    //     return $this->profileQuery->where($condition);
-    // }
+    /**
+     * Finds a profile.
+     *
+     * @param mixed $condition
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findProfile($condition)
+    {
+        return $this->profileQuery->where($condition);
+    }
 }

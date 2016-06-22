@@ -150,21 +150,21 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->user_type == 40;
     }
 
-    // /**
-    //  * @return \yii\db\ActiveQuery
-    //  */
-    // public function getProfile()
-    // {
-    //     return $this->hasOne($this->module->modelMap['Profile'], ['user_id' => 'id']);
-    // }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfile()
+    {
+        return $this->hasOne($this->module->modelMap['Profile'], ['user_id' => 'id']);
+    }
 
-    // /**
-    //  * @param Profile $profile
-    //  */
-    // public function setProfile(Profile $profile)
-    // {
-    //     $this->_profile = $profile;
-    // }
+    /**
+     * @param Profile $profile
+     */
+    public function setProfile(Profile $profile)
+    {
+        $this->_profile = $profile;
+    }
 
     /** @inheritdoc */
     public function getId()
@@ -511,13 +511,13 @@ class User extends ActiveRecord implements IdentityInterface
 
         if($insert) 
         {
-            // // Create the user profile item
-            // if($this->_profile == null) 
-            // {
-            //     $this->_profile = Yii::createObject(Profile::className());
-            // }
+            // Create the user profile item
+            if($this->_profile == null) 
+            {
+                $this->_profile = Yii::createObject(Profile::className());
+            }
 
-            // $this->_profile->link('user', $this);
+            $this->_profile->link('user', $this);
         }
     }
 

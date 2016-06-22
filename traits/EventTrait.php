@@ -14,10 +14,10 @@ use yii\authclient\ClientInterface;
 use yii\base\Model;
 
 use lnch\users\events\FormEvent;
-// use lnch\users\events\ProfileEvent;
+use lnch\users\events\ProfileEvent;
 use lnch\users\events\ResetPasswordEvent;
 use lnch\users\events\UserEvent;
-// use lnch\users\models\Profile;
+use lnch\users\models\Profile;
 use lnch\users\models\RecoveryForm;
 use lnch\users\models\Token;
 use lnch\users\models\User;
@@ -47,15 +47,15 @@ trait EventTrait
         return \Yii::createObject(['class' => UserEvent::className(), 'user' => $user]);
     }
 
-    // /**
-    //  * @param  Profile      $profile
-    //  * @return ProfileEvent
-    //  * @throws \yii\base\InvalidConfigException
-    //  */
-    // protected function getProfileEvent(Profile $profile)
-    // {
-    //     return \Yii::createObject(['class' => ProfileEvent::className(), 'profile' => $profile]);
-    // }
+    /**
+     * @param  Profile      $profile
+     * @return ProfileEvent
+     * @throws \yii\base\InvalidConfigException
+     */
+    protected function getProfileEvent(Profile $profile)
+    {
+        return \Yii::createObject(['class' => ProfileEvent::className(), 'profile' => $profile]);
+    }
 
     // /**
     //  * @param  Account      $account

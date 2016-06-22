@@ -277,6 +277,7 @@ class AdminController extends Controller
         $event   = $this->getProfileEvent($profile);
 
         $this->performAjaxValidation($profile);
+        
         $this->trigger(self::EVENT_BEFORE_PROFILE_UPDATE, $event);
 
         if($profile->load(Yii::$app->request->post()) && $profile->save()) 

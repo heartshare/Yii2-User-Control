@@ -30,7 +30,8 @@ class Bootstrap implements BootstrapInterface
     /** @var array Model's map */
     private $_modelMap = [
         'User'          => 'lnch\users\models\User',
-        'Token'         => 'lnch\users\models\Token',             
+        'Token'         => 'lnch\users\models\Token', 
+        'Profile'       => 'lnch\users\models\Profile',            
     ];
 
     /** @inheritdoc */
@@ -61,7 +62,7 @@ class Bootstrap implements BootstrapInterface
             // Creates a 'model' that is an ActiveQuery of it's base class. Clever!
             Yii::$container->setSingleton(Finder::className(), [
                 'userQuery'    => Yii::$container->get('UserQuery'),
-                // 'profileQuery' => Yii::$container->get('ProfileQuery'),
+                'profileQuery' => Yii::$container->get('ProfileQuery'),
                 'tokenQuery'   => Yii::$container->get('TokenQuery'),
             ]);
 

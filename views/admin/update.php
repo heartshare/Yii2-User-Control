@@ -57,23 +57,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             ],
                         ],
                         [
-                            'label' => Yii::t('user', 'Block'),
-                            'url'   => ['/user/admin/block', 'id' => $user->id],
+                            'label' => Yii::t('user', 'Ban'),
+                            'url'   => ['/user/admin/ban', 'id' => $user->id],
                             'visible' => !$user->isBanned,
                             'linkOptions' => [
                                 'class' => 'text-danger',
                                 'data-method' => 'post',
-                                'data-confirm' => Yii::t('user', 'Are you sure you want to block this user?'),
+                                'data-confirm' => Yii::t('user', 'Are you sure you want to ban this user?'),
                             ],
                         ],
                         [
-                            'label' => Yii::t('user', 'Unblock'),
-                            'url'   => ['/user/admin/block', 'id' => $user->id],
+                            'label' => Yii::t('user', 'Unban'),
+                            'url'   => ['/user/admin/ban', 'id' => $user->id],
                             'visible' => $user->isBanned,
                             'linkOptions' => [
                                 'class' => 'text-success',
                                 'data-method' => 'post',
-                                'data-confirm' => Yii::t('user', 'Are you sure you want to unblock this user?'),
+                                'data-confirm' => Yii::t('user', 'Are you sure you want to unban this user?'),
                             ],
                         ],
                         [
