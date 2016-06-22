@@ -74,6 +74,9 @@ class User extends ActiveRecord implements IdentityInterface
     /** @var string Plain password. Used for model validation. */
     public $password;
 
+    /** @var bool Whether to confirm the users account automatically */
+    public $confirmOnCreation;
+
     /** @var Profile|null */
     private $_profile;
 
@@ -198,6 +201,8 @@ class User extends ActiveRecord implements IdentityInterface
             'user_type'             => Yii::t('user', 'User Type'),
             'last_updated'          => Yii::t('user', 'Last Updated'),
             'last_login'            => Yii::t('user', 'Last Login'),
+
+            'confirmOnCreation'     => Yii::t('user', 'Automatically confirm the account? No confirmation email will be sent'),
         ];
     }
 
@@ -244,6 +249,9 @@ class User extends ActiveRecord implements IdentityInterface
             'passwordRequired' => ['password', 'required', 'on' => ['register']],
             'passwordLength'   => ['password', 'string', 'min' => 6, 'on' => ['register', 'create']],
 
+            // Confirm on creation
+            'confirmOnCreation' => ['confirmOnCreation', 'boolean'],
+
             // Default values
         ];
     }
@@ -267,6 +275,7 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         $this->confirmation_date = gmdate("Y-m-d H:i:s");
+        $this->status = "A";
         $this->password = $this->password == null ? Password::generate(8) : $this->password;
         
         $this->trigger(self::BEFORE_CREATE);
