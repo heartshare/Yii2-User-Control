@@ -1,0 +1,27 @@
+.lnch-status-icon, .lnch-action-icon {
+	opacity: 0.2;
+	font-size: 18px;
+	margin: 0 6px;
+	cursor: default;
+	transition: 0.3s ease all;
+	-moz-transition: 0.3s ease all;
+	-webkit-transition: 0.3s ease all;
+}
+
+.lnch-action-icon {
+	cursor: pointer;
+}
+
+.lnch-status-icon.ok {
+	opacity: 1;
+	color: #2ab42a;
+}
+
+.lnch-status-icon.not-ok {
+	opacity: 1;
+	color: #e73333;
+}
+
+.lnch-action-icon:hover {
+	opacity: 1;
+}

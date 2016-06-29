@@ -83,6 +83,14 @@ class User extends ActiveRecord implements IdentityInterface
     /** @var string Default username regexp */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';
 
+    /** @var array Array of possible user types */
+    public static $userTypes = [
+        10 => "User",
+        20 => "Moderator",
+        30 => "Admin",
+        40 => "Founder"
+    ];
+
     public function behaviors()
     {
         return [
@@ -224,6 +232,7 @@ class User extends ActiveRecord implements IdentityInterface
             'create'   => ['username', 'email', 'password'],
             'update'   => ['username', 'email', 'password'],
             'settings' => ['username', 'email', 'password'],
+            'manage-type' => ['user_type'],
         ]);
     }
 
@@ -251,6 +260,11 @@ class User extends ActiveRecord implements IdentityInterface
 
             // Confirm on creation
             'confirmOnCreation' => ['confirmOnCreation', 'boolean'],
+
+            // User Type
+            'userTypeRequired'  => ['user_type', 'required', 'on' => ['manage-type']],
+            'userType'          => ['user_type', 'integer'],
+
 
             // Default values
         ];
@@ -414,6 +428,11 @@ class User extends ActiveRecord implements IdentityInterface
     //         }
     //     }
     // }
+
+    public static function manageableUserTypes()
+    {
+        return self::$userTypes;
+    }
 
     /**
      * Confirms the user by setting 'confirmed_at' field to current time.

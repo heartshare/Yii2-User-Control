@@ -46,85 +46,97 @@ class AdminController extends Controller
 
     /**
      * Event is triggered before creating new user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_CREATE = 'beforeCreate';
 
     /**
      * Event is triggered after creating new user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_CREATE = 'afterCreate';
 
     /**
      * Event is triggered before updating existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_UPDATE = 'beforeUpdate';
 
     /**
      * Event is triggered after updating existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_UPDATE = 'afterUpdate';
 
     /**
+     * Event is triggered before updating existing user's type.
+     * Triggered with \lnch\users\events\UserEvent.
+     */
+    const EVENT_BEFORE_UPDATE_TYPE = 'beforeUpdateType';
+
+    /**
+     * Event is triggered after updating existing user's type.
+     * Triggered with \lnch\users\events\UserEvent.
+     */
+    const EVENT_AFTER_UPDATE_TYPE = 'afterUpdateType';
+
+    /**
      * Event is triggered before updating existing user's profile.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_PROFILE_UPDATE = 'beforeProfileUpdate';
 
     /**
      * Event is triggered after updating existing user's profile.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_PROFILE_UPDATE = 'afterProfileUpdate';
 
     /**
      * Event is triggered before confirming existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_CONFIRM = 'beforeConfirm';
 
     /**
      * Event is triggered after confirming existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_CONFIRM = 'afterConfirm';
 
     /**
      * Event is triggered before deleting existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_DELETE = 'beforeDelete';
 
     /**
      * Event is triggered after deleting existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_DELETE = 'afterDelete';
 
     /**
      * Event is triggered before blocking existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_BLOCK = 'beforeBlock';
 
     /**
      * Event is triggered after blocking existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_BLOCK = 'afterBlock';
 
     /**
      * Event is triggered before unblocking existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_BEFORE_UNBLOCK = 'beforeUnblock';
 
     /**
      * Event is triggered after unblocking existing user.
-     * Triggered with \dektrium\user\events\UserEvent.
+     * Triggered with \lnch\users\events\UserEvent.
      */
     const EVENT_AFTER_UNBLOCK = 'afterUnblock';
 
@@ -153,7 +165,7 @@ class AdminController extends Controller
                 'actions' => [
                     'delete'  => ['post'],
                     'confirm' => ['post'],
-                    'block'   => ['post'],
+                    'ban'     => ['post'],
                 ],
             ],
             'access' => [
@@ -252,6 +264,40 @@ class AdminController extends Controller
         return $this->render('_account', [
             'user' => $user,
         ]);
+    }
+
+    /** 
+     * AJAX handler to allow changing of the user type from the dashboard
+     *
+     * @return boolean Result of the process
+     */
+    public function actionUpdateUserType()
+    {
+        // Check if there is an Editable ajax request
+        if(isset($_POST['hasEditable'])) 
+        {
+            // Use Yii's response format to encode output as JSON
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            $data = Yii::$app->request->post('User');
+
+            $user = $this->findModel($data['id']);
+            $user->scenario = 'manage-type';
+            
+            if($user->load(Yii::$app->request->post()) && $user->save()) 
+            {                
+                // Return JSON encoded output in the below format
+                return ['output' => User::$userTypes[$data['user_type']], 'message' => ''];
+            }
+            else 
+            {
+                // Return nothing
+                return ['output' => '', 'message' => ''];
+            }
+        }
+
+        // Else return to rendering a normal view
+        return $this->render('view', ['model' => $model]);
     }
 
     /**
@@ -366,7 +412,7 @@ class AdminController extends Controller
     }
     
     /**
-     * Bans the user.
+     * Bans or unbans the user.
      *
      * @param int $id
      *
