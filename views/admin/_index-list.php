@@ -62,7 +62,7 @@
                 'value'     => function($model)
                 {
                     // return User::$userTypes[$model->user_type];
-                    if($model->id !== Yii::$app->user->identity->id && Yii::$app->user->identity->user_level >= $model->user_level)
+                    if($model->id !== Yii::$app->user->identity->id && Yii::$app->user->identity->user_type >= $model->user_type)
                     {   
                         return Editable::widget([
                             'model'     => $model, 

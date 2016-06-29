@@ -37,11 +37,6 @@
         'module' => Yii::$app->getModule('user'),
     ]);
 
-    if($this->context->module->showAdminMenu)
-    {
-        echo $this->render('/admin/_menu');
-    } 
-
     echo $this->render('_index-list', [
         'dataProvider' => $dataProvider,
         'searchModel'  => $searchModel,
