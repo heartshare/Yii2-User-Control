@@ -120,7 +120,7 @@ class RegistrationForm extends Model
             return false;
         }
 
-        UserLog::log("register");
+        UserLog::log("register", '', $user);
         
         Yii::$app->session->setFlash(
             'info',

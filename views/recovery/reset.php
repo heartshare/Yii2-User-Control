@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+    use lnch\users\assets\LoginAssets;
+
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
 
@@ -19,26 +21,59 @@
     $this->title = Yii::t('user', 'Reset your password');
     $this->params['breadcrumbs'][] = $this->title;
 
+    LoginAssets::register($this);
+
 ?>
 <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id'                     => 'password-recovery-form',
-                    'enableAjaxValidation'   => true,
-                    'enableClientValidation' => false,
-                ]); ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+        <div class="lnch-users-wrapper">  
 
-                <?= Html::submitButton(Yii::t('user', 'Finish'), ['class' => 'btn btn-success btn-block']) ?><br>
+            <div class="lnch-users-container">
 
-                <?php ActiveForm::end(); ?>
-            </div>
-        </div>
+                <div class="lnch-users-form">
+
+                    <div class="lnch-header">
+                        <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
+                    </div> <!-- End .lnch-header -->
+
+                    <div class="lnch-content" style="padding-top: 1em; padding-bottom: 0;">
+
+                        <p class="text-center"><?php echo Yii::t('user', 'Please choose a new password'); ?></p>
+
+                        <?php 
+
+                            $form = ActiveForm::begin([
+                                'id'                     => 'password-recovery-form',
+                                'enableAjaxValidation'   => true,
+                                'enableClientValidation' => false,
+                            ]); 
+
+                            echo $form->field($model, 'password', [
+                                'inputOptions' => [ 
+                                    'class' => 'lnch-form-control', 
+                                    'placeholder' => 'New Password',
+                                ],
+                                'labelOptions' => [
+                                    'style' => 'display: none;'
+                                ]
+                            ])->passwordInput();
+
+                            echo Html::submitButton(Yii::t('user', 'Change Password'), ['class' => 'btn btn-success btn-block']);
+
+                            ?><br><?php
+
+                            ActiveForm::end(); 
+
+                        ?>
+
+                    </div> <!-- End .lnch-content -->
+
+                </div> <!-- End .lnch-users-form -->
+            
+            </div> <!-- End .lnch-users-container -->
+
+        </div> <!-- End .lnch-users-wrapper -->
+
     </div>
 </div>

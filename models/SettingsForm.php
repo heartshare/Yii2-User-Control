@@ -78,16 +78,22 @@ class SettingsForm extends Model
             'usernameTrim' => ['username', 'filter', 'filter' => 'trim'],
             'usernameLength'   => ['username', 'string', 'min' => 3, 'max' => 255],
             'usernamePattern' => ['username', 'match', 'pattern' => '/^[-a-zA-Z0-9_\.@]+$/'],
+
             'emailRequired' => ['email', 'required'],
             'emailTrim' => ['email', 'filter', 'filter' => 'trim'],
             'emailPattern' => ['email', 'email'],
-            'emailUsernameUnique' => [['email', 'username'], 'unique', 'when' => function ($model, $attribute) {
-                return $this->user->$attribute != $model->$attribute;
-            }, 'targetClass' => $this->module->modelMap['User']],
+            'emailUsernameUnique' => [
+                ['email', 'username'], 'unique', 'when' => function ($model, $attribute) {
+                    return $this->user->$attribute != $model->$attribute;
+                }, 
+                'targetClass' => $this->module->modelMap['User']],
+
             'newPasswordLength' => ['new_password', 'string', 'min' => 6],
+
             'currentPasswordRequired' => ['current_password', 'required'],
             'currentPasswordValidate' => ['current_password', function ($attr) {
-                if (!Password::validate($this->$attr, $this->user->password_hash)) {
+                if(!Password::validate($this->$attr, $this->user->password_hash)) 
+                {
                     $this->addError($attr, Yii::t('user', 'Current password is not valid'));
                 }
             }],
@@ -176,7 +182,7 @@ class SettingsForm extends Model
         ]);
 
         $token->save(false);
-        
+
         $this->mailer->sendReconfirmationMessage($this->user, $token);
         Yii::$app->session->setFlash('info', Yii::t('user', 'A confirmation message has been sent to your new email address'));
     }
@@ -189,6 +195,7 @@ class SettingsForm extends Model
     protected function secureEmailChange()
     {
         $this->defaultEmailChange();
+        
         /** @var Token $token */
         $token = Yii::createObject([
             'class'   => Token::className(),
@@ -196,11 +203,13 @@ class SettingsForm extends Model
             'type'    => Token::TYPE_CONFIRM_OLD_EMAIL,
         ]);
         $token->save(false);
+
         $this->mailer->sendReconfirmationMessage($this->user, $token);
         // unset flags if they exist
         $this->user->flags &= ~User::NEW_EMAIL_CONFIRMED;
         $this->user->flags &= ~User::OLD_EMAIL_CONFIRMED;
         $this->user->save(false);
+
         Yii::$app->session->setFlash('info', Yii::t('user', 'We have sent confirmation links to both old and new email addresses. You must click both links to complete your request'));
     }
 }

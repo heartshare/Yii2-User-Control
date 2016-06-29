@@ -105,6 +105,8 @@ class Bootstrap implements BootstrapInterface
                 ];
             }
 
+            // Load assets
+            
         }
 
     } // End bootstrap()

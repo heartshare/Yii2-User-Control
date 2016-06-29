@@ -4,7 +4,7 @@ use yii\db\Migration;
 
 class m160622_095708_add_foreign_indexes extends Migration
 {
-    public function up()
+    public function safeUp()
     {
         $this->execute("ALTER TABLE {{%lnch_users}} ENGINE = InnoDB;");
         $this->execute("ALTER TABLE {{%lnch_user_profiles}} ENGINE = InnoDB;");
@@ -30,7 +30,7 @@ class m160622_095708_add_foreign_indexes extends Migration
             'CASCADE', 'RESTRICT');
     }
 
-    public function down()
+    public function safeDown()
     {
         $this->dropForeignKey('fk-lnch_user_profiles-lnch_users', '{{%lnch_user_profiles}}');
         $this->dropForeignKey('fk-lnch_user_tokens-lnch_users', '{{%lnch_user_tokens}}');

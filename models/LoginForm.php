@@ -138,7 +138,7 @@ class LoginForm extends Model
         {
             $message = '';
 
-            foreach($this->errors['user'] as $error)
+            foreach($this->errors['login'] as $error)
             {
                 $message .= $error . "\n";
             }
