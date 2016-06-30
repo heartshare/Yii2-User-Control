@@ -26,7 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); 
 ?>
 
-<?php if($this->context->module->showAdminMenu): echo $this->render('_menu'); endif; ?>
+<?php 
+    $this->beginContent('@lnch/users/views/admin/__template-update.php', ['user' => $user]); 
+?>
 
 <div class="row">
     <div class="col-md-3">
@@ -98,3 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php 
+    $this->endContent();
+?>

@@ -30,6 +30,9 @@ class Finder extends Object
     /** @var ActiveQuery */
     protected $profileQuery;
 
+    /** @var ActiveQuery */
+    protected $userTypeQuery;
+
     /**
      * @return ActiveQuery
      */
@@ -54,6 +57,14 @@ class Finder extends Object
         return $this->profileQuery;
     }
 
+    /**
+     * @return ActiveQuery
+     */
+    public function getUserTypeQuery()
+    {
+        return $this->userTypeQuery;
+    }
+
     /** @param ActiveQuery $userQuery */
     public function setUserQuery(ActiveQuery $userQuery)
     {
@@ -70,6 +81,12 @@ class Finder extends Object
     public function setProfileQuery(ActiveQuery $profileQuery)
     {
         $this->profileQuery = $profileQuery;
+    }
+
+    /** @param ActiveQuery $userTypeQuery */
+    public function setUserTypeQuery(ActiveQuery $userTypeQuery)
+    {
+        $this->userTypeQuery = $userTypeQuery;
     }
 
     /**
@@ -189,5 +206,29 @@ class Finder extends Object
     public function findProfile($condition)
     {
         return $this->profileQuery->where($condition);
+    }
+
+    /**
+     * Finds a user type by id.
+     *
+     * @param int $id
+     *
+     * @return null|models\Profile
+     */
+    public function findUserTypeById($id)
+    {
+        return $this->findUserType(['type_id' => $id])->one();
+    }
+
+    /**
+     * Finds a user type.
+     *
+     * @param mixed $condition
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function findUserType($condition)
+    {
+        return $this->userTypeQuery->where($condition);
     }
 }

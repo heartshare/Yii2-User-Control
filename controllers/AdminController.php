@@ -28,6 +28,7 @@ use lnch\users\Finder;
 use lnch\users\models\Profile;
 use lnch\users\models\User;
 use lnch\users\models\UserSearch;
+use lnch\users\models\UserTypeSearch;
 use lnch\users\Module;
 use lnch\users\traits\AjaxValidationTrait;
 use lnch\users\traits\EventTrait;
@@ -182,6 +183,7 @@ class AdminController extends Controller
             ],
         ];
     }
+
     /**
      * Lists all User models.
      *
@@ -196,6 +198,21 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
             'searchModel'  => $searchModel,
         ]);
+    }
+
+    /** 
+     * Lists all user types
+     *
+     * @return mixed
+     */
+    public function actionTypes()
+    {
+    	$searchModel  = Yii::createObject(UserTypeSearch::className());
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
+    	return $this->render('types', [
+            'dataProvider' => $dataProvider,
+            'searchModel'  => $searchModel,
+    	]);
     }
 
     /**

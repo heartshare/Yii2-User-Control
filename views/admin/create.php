@@ -28,8 +28,10 @@
         'module' => Yii::$app->getModule('user'),
     ]); 
 
-    if($this->context->module->showAdminMenu): echo $this->render('_menu'); endif; 
+?>
 
+<?php 
+    $this->beginContent('@lnch/users/views/admin/__template-create.php'); 
 ?>
 
 <div class="row">
@@ -86,3 +88,7 @@
         </div>
     </div>
 </div>
+
+<?php 
+    $this->endContent();
+?>

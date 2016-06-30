@@ -31,7 +31,8 @@ class Bootstrap implements BootstrapInterface
     private $_modelMap = [
         'User'          => 'lnch\users\models\User',
         'Token'         => 'lnch\users\models\Token', 
-        'Profile'       => 'lnch\users\models\Profile',            
+        'Profile'       => 'lnch\users\models\Profile',  
+        'UserType'      => 'lnch\users\models\UserType',          
     ];
 
     /** @inheritdoc */
@@ -52,7 +53,7 @@ class Bootstrap implements BootstrapInterface
                 $modelName = is_array($definition) ? $definition['class'] : $definition;
                 $module->modelMap[$name] = $modelName;
 
-                if (in_array($name, ['User', 'Profile', 'Token', 'Account'])) {
+                if (in_array($name, ['User', 'Profile', 'Token', 'UserType'])) {
                     Yii::$container->set($name . 'Query', function () use ($modelName) {
                         return $modelName::find();
                     });
@@ -64,6 +65,7 @@ class Bootstrap implements BootstrapInterface
                 'userQuery'    => Yii::$container->get('UserQuery'),
                 'profileQuery' => Yii::$container->get('ProfileQuery'),
                 'tokenQuery'   => Yii::$container->get('TokenQuery'),
+                'userTypeQuery' => Yii::$container->get('UserTypeQuery'),
             ]);
 
             if($app instanceof ConsoleApplication) 

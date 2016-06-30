@@ -32,9 +32,6 @@ class UserSearch extends Model
     public $creation_date;
 
     /** @var string */
-    public $signup_ip;
-
-    /** @var string */
     public $user_type;
 
     /** @var Finder */
