@@ -7,17 +7,24 @@
  * For the full copyright and license information, please view the LICENSE.md
  * file that was distributed with this source code.
  */
-use dektrium\user\models\User;
-use yii\bootstrap\Nav;
-use yii\web\View;
-/**
- * @var View 	$this
- * @var User 	$user
- * @var string 	$content
- */
-$this->title = Yii::t('user', 'Update user account');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
+    use lnch\users\assets\AdminAssets;
+    use lnch\users\models\User;
+
+    use yii\bootstrap\Nav;
+    use yii\web\View;
+
+    /**
+     * @var View 	$this
+     * @var User 	$user
+     * @var string 	$content
+     */
+    $this->title = Yii::t('user', 'Update user account');
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('user', 'Users'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
+
+    AdminAssets::register($this);
+
 ?>
 
 <?php 
@@ -32,8 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-md-3">
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="panel panel-default lnch-users">
+            <div class="panel-body narrow">
                 <?= Nav::widget([
                     'options' => [
                         'class' => 'nav-pills nav-stacked',
@@ -93,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="col-md-9">
-        <div class="panel panel-default">
+        <div class="panel lnch-users panel-default">
             <div class="panel-body">
                 <?= $content ?>
             </div>

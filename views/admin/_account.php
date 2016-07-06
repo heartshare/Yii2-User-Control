@@ -15,20 +15,24 @@ use yii\helpers\Html;
  */
 ?>
 
-<?php $this->beginContent('@lnch/users/views/admin/update.php', ['user' => $user]) ?>
+<?php 
+    
+    $this->beginContent('@lnch/users/views/admin/update.php', ['user' => $user]);
 
-<?php $form = ActiveForm::begin([
-    'layout' => 'horizontal',
-    'enableAjaxValidation'   => true,
-    'enableClientValidation' => false,
-    'fieldConfig' => [
-        'horizontalCssClasses' => [
-            'wrapper' => 'col-sm-9',
+    $form = ActiveForm::begin([
+        'layout' => 'horizontal',
+        'enableAjaxValidation'   => true,
+        'enableClientValidation' => false,
+        'fieldConfig' => [
+            'horizontalCssClasses' => [
+                'wrapper' => 'col-sm-9',
+            ],
         ],
-    ],
-]); ?>
+    ]); 
 
-<?= $this->render('_user', ['form' => $form, 'user' => $user]) ?>
+    echo $this->render('_user', ['form' => $form, 'user' => $user]); 
+
+?>
 
 <div class="form-group">
     <div class="col-lg-offset-3 col-lg-9">

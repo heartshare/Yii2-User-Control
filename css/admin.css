@@ -25,3 +25,21 @@
 .lnch-action-icon:hover {
 	opacity: 1;
 }
+
+.kv-editable-link {
+	padding: 0 !important;
+}
+
+.nav-pills > li > a {
+	border-radius: 0 !important;
+	margin-right: 5px;
+}
+
+.panel.lnch-users {
+	border-radius: 0 !important;
+	margin-bottom: 1em;
+}
+
+.panel.lnch-users .panel-body.narrow {
+	padding: 8px;
+}
