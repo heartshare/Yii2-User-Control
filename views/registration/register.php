@@ -94,7 +94,7 @@
                                 ])->passwordInput();
                             }
 
-                            echo Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'btn btn-success btn-block']); 
+                            echo Html::submitButton(Yii::t('user', 'Sign up'), ['class' => 'lnch-btn lnch-btn-success lnch-btn-block']); 
 
                             ActiveForm::end(); 
 

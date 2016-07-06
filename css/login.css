@@ -4,10 +4,8 @@
 }
 
 .lnch-users-container {
-	top: 50%;
-	position: absolute;
 	width: 100%;
-	transform: translateY(-50%);
+	margin-top: 100px;
 }
 
 .lnch-users-form {
@@ -51,13 +49,67 @@
 
 .remember-me {
 	float: left;
-	width: 70%;
+	width: 60%;
+}
+.remember-me label {
+	font-weight: normal;
 }
 
 .forgot-password-link {
-	width: 30%;
+	width: 40%;
 	float: right;
 	text-align: right;
 	font-size: 12px;
 	padding: 0 0 0.75em 0.75em;
+}
+
+.forgot-password-link a,
+.forgot-password-link a:visited {
+	color: #2FAAD4;
+	transition: 		0.3s ease all;
+	-moz-transition: 	0.3s ease all;
+	-webkit-transition: 0.3s ease all;
+}
+.forgot-password-link a:hover,
+.forgot-password-link a:active {
+	color: #145063;
+	text-decoration: none;
+}
+
+.lnch-btn-block {
+    display: block;
+    width: 100%;
+}
+.lnch-btn-success {
+    color: #fff;
+    background-color: #5fc697;
+    border-color: #5fc697;
+}
+.lnch-btn-primary {
+    color: #fff;
+    background-color: #4593d5;
+    border-color: #4593d5;
+}
+.lnch-btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 8px 20px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: .3s ease background;
+    -moz-transition: .3s ease background;
+    -webkit-transition: .3s ease background;
 }

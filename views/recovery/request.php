@@ -59,7 +59,7 @@
                                 ]
                             ])->textInput(['autofocus' => true]);
 
-                            echo Html::submitButton(Yii::t('user', 'Continue'), ['class' => 'btn btn-primary btn-block']);
+                            echo Html::submitButton(Yii::t('user', 'Continue'), ['class' => 'lnch-btn lnch-btn-primary lnch-btn-block']);
 
                             ?><br><?php
 

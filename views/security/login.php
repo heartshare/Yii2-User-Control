@@ -104,12 +104,7 @@
 
                             // ->label(Yii::t('user', 'Password') . ($module->enablePasswordRecovery ? ' (' . Html::a(Yii::t('user', 'Forgot password?'), ['/user/recovery/request'], ['tabindex' => '5']) . ')' : ''));
 
-
-
-
-                            echo Html::submitButton(Yii::t('user', 'Login'), ['class' => 'btn btn-success btn-block', 'tabindex' => '3']);
-                            
-                            
+                            echo Html::submitButton(Yii::t('user', 'Login'), ['class' => 'lnch-btn lnch-btn-success lnch-btn-block', 'tabindex' => '3']);
 
                             ActiveForm::end(); 
 

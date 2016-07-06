@@ -59,7 +59,7 @@
                                 ]
                             ])->passwordInput();
 
-                            echo Html::submitButton(Yii::t('user', 'Change Password'), ['class' => 'btn btn-success btn-block']);
+                            echo Html::submitButton(Yii::t('user', 'Change Password'), ['class' => 'lnch-btn lnch-btn-success lnch-btn-block']);
 
                             ?><br><?php
 
