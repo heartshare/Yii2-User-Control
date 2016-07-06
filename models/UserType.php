@@ -66,6 +66,14 @@ class UserType extends ActiveRecord
         ];
     }
 
+    public function getPermissions()
+    {
+        return UserTypePermission::find()
+            ->where(['<=', 'min_user_type', $this->type_id])
+            ->orderBy('group ASC, min_user_type ASC, permission ASC')
+            ->all();
+    }
+
     /** @inheritdoc */
     public function beforeSave($insert)
     {

@@ -43,3 +43,19 @@
 .panel.lnch-users .panel-body.narrow {
 	padding: 8px;
 }
+
+.permissions-container {
+	max-height: 150px;
+	overflow: auto;
+}
+
+.user-type-permission {
+	display: inline-block;
+	font-size: 11px;
+	padding: 2px 5px;
+	border-radius: 2px;
+	margin-right: 4px;
+	margin-bottom: 4px;
+	background: #828282;
+	color: white;
+}

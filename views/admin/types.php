@@ -42,6 +42,8 @@
         'module' => Yii::$app->getModule('user'),
     ]);
     
+    echo "<div class='table table-responsive'>";
+
     Pjax::begin([
         'id' => 'user-types-pjax'
     ]);
@@ -51,9 +53,9 @@
         'filterModel'   => $searchModel,
         'layout'        => "{items}\n{pager}",
         'columns'       => [
-            [
-                'attribute' => 'type_id',
-            ],
+            // [
+            //     'attribute' => 'type_id',
+            // ],
             [
                 'attribute' => 'name', 
             ],
@@ -89,11 +91,31 @@
             ],
             [
                 'attribute' => 'description'
+            ],
+            [
+            	'header'	=> 'Permissions',
+            	'content'	=> function($model)
+            	{
+            		$perms = "";
+
+            		foreach($model->permissions as $perm)
+            		{
+            			$perms .= "<span class='user-type-permission'>" . $perm->group . " : " . $perm->permission . "</span>";
+            		}
+
+            		return "<div class='permissions-container'>" . $perms . "</div>";
+            	},
+            	'format' 	=> 'raw',
+            	'contentOptions' => [
+            		'style' => 'width: 33%; min-width: 200px;'
+            	]	
             ]
         ]
     ]); 
 
     Pjax::end(); 
+
+    echo "</div>";
 
     $this->endContent(); 
 
