@@ -215,6 +215,35 @@ class AdminController extends Controller
     	]);
     }
 
+    public function actionTypeAlias()
+    {
+        // Check if there is an Editable ajax request
+        if(isset($_POST['hasEditable'])) 
+        {
+            // Use Yii's response format to encode output as JSON
+            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            $data = Yii::$app->request->post('UserType');
+
+            $type = $this->finder->findUserTypeById($data['type_id']);
+            $type->scenario = 'manage-alias';
+            
+            if($type->load(Yii::$app->request->post()) && $type->save()) 
+            {                
+                // Return JSON encoded output in the below format
+                return ['output' => $data['alias'], 'message' => ''];
+            }
+            else 
+            {
+                // Return nothing
+                return ['output' => '', 'message' => ''];
+            }
+        }
+
+        // Else return to rendering a normal view
+        return $this->render('view', ['model' => $model]);
+    }
+
     /**
      * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'index' page.

@@ -13,6 +13,7 @@ namespace lnch\users\models;
 use Yii;
 
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 use lnch\users\traits\ModuleTrait;
     
@@ -43,6 +44,26 @@ class UserType extends ActiveRecord
     public static function primaryKey()
     {
         return ['type_id'];
+    }
+
+    /** @inheritdoc */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        return ArrayHelper::merge($scenarios, [
+            'manage-alias' => ['alias'],
+        ]);
+    }
+
+    /** @inheritdoc */
+    public function rules()
+    {
+        return [
+            // Alias
+            'aliasRequired'     => ['alias', 'required', 'on' => ['manage-alias']],
+            'aliasMaxLength'    => ['alias', 'string', 'max' => 36],
+        ];
     }
 
     /** @inheritdoc */

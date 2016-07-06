@@ -86,10 +86,9 @@ class UserTypeSearch extends Model
             return $dataProvider;
         }
         
-        // $query->andFilterWhere(['like', 'username', $this->username])
-        //     ->andFilterWhere(['like', 'email', $this->email])
-        //     ->andFilterWhere(['signup_ip' => $this->signup_ip])
-        //     ->andFilterWhere(['user_type' => $this->user_type]);
+        $query->andFilterWhere(['type_id' => $this->type_id])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'alias', $this->alias]);
         
         return $dataProvider;
     }
