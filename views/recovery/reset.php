@@ -37,7 +37,7 @@
                         <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
                     </div> <!-- End .lnch-header -->
 
-                    <div class="lnch-content" style="padding-top: 1em; padding-bottom: 0;">
+                    <div class="lnch-content" style="padding-top: 1em;">
 
                         <p class="text-center"><?php echo Yii::t('user', 'Please choose a new password'); ?></p>
 

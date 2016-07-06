@@ -12,6 +12,8 @@
 	use lnch\users\assets\AdminAssets;
     use lnch\users\models\UserTypeSearch;
 
+    use kartik\editable\Editable;
+
     use yii\data\ActiveDataProvider;
     use yii\grid\GridView;
     use yii\helpers\Html;
@@ -40,12 +42,55 @@
         'module' => Yii::$app->getModule('user'),
     ]);
     
-    Pjax::begin();
+    Pjax::begin([
+        'id' => 'user-types-pjax'
+    ]);
 
     echo GridView::widget([
         'dataProvider'  => $dataProvider,
         'filterModel'   => $searchModel,
         'layout'        => "{items}\n{pager}",
+        'columns'       => [
+            [
+                'attribute' => 'type_id',
+            ],
+            [
+                'attribute' => 'name', 
+            ],
+            [
+                'attribute' => 'alias',
+                'format'    => 'raw',
+                'value'     => function($model)
+                {
+                    return Editable::widget([
+                        'pjaxContainerId' => 'user-types-pjax',
+                        'header'    => 'Alias',
+                        'name'      => 'UserType[alias]',
+                        'size'      => 'md',
+                        'format'    => Editable::FORMAT_LINK,
+                        'placement' => 'top',
+                        'displayValue' => $model->alias,
+                        'value'     => $model->alias,
+
+                        // 'inputType' => Editable::INPUT_TEXT,
+
+                        'beforeInput' => function($form, $widget) use($model)
+                        {
+                            // echo $form->field($widget->model, 'type_id', ['labelOptions' => ['style' => 'display: none;']])->hiddenInput();
+                            echo Html::hiddenInput('UserType[type_id]', $model->type_id);
+                        },
+
+                        'formOptions'   => [
+                            'action' => ['/user/admin/type-alias']
+                        ],
+                        'buttonsTemplate' => '{submit}',
+                    ]);
+                }
+            ],
+            [
+                'attribute' => 'description'
+            ]
+        ]
     ]); 
 
     Pjax::end(); 

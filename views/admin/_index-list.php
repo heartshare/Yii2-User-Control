@@ -15,11 +15,8 @@
 
     use kartik\editable\Editable;
 
-    // use yii\data\ActiveDataProvider;
     use yii\grid\GridView;
     use yii\helpers\Html;
-    // use yii\jui\DatePicker;
-    // use yii\web\View;
     use yii\widgets\Pjax;
 
     AdminAssets::register($this);
@@ -65,8 +62,10 @@
                     if($model->id !== Yii::$app->user->identity->id && Yii::$app->user->identity->user_type >= $model->user_type)
                     {   
                         return Editable::widget([
-                            'model'     => $model, 
-                            'attribute' => 'user_type',
+                            // 'model'     => $model, 
+                            // 'attribute' => 'user_type',
+                            'header'    => 'User Type',
+                            'name'      => 'User[user_type]',
                             'size'      => 'md',
                             'format'    => Editable::FORMAT_LINK,
                             'placement' => 'top',
@@ -75,9 +74,10 @@
                             'inputType' => Editable::INPUT_DROPDOWN_LIST,
                             'data'      => User::manageableUserTypes(),
 
-                            'beforeInput' => function($form, $widget) 
+                            'beforeInput' => function($form, $widget) use($model) 
                             {
-                                echo $form->field($widget->model, 'id', ['labelOptions' => ['style' => 'display: none;']])->hiddenInput();
+                                // echo $form->field($widget->model, 'id', ['labelOptions' => ['style' => 'display: none;']])->hiddenInput();
+                                echo Html::hiddenInput('User[id]', $model->id);
                             },
 
                             'formOptions'   => [
