@@ -28,6 +28,7 @@ use lnch\users\Finder;
 use lnch\users\models\Profile;
 use lnch\users\models\User;
 use lnch\users\models\UserSearch;
+use lnch\users\models\UserTypePermission;
 use lnch\users\models\UserTypeSearch;
 use lnch\users\Module;
 use lnch\users\traits\AjaxValidationTrait;
@@ -344,6 +345,21 @@ class AdminController extends Controller
 
         // Else return to rendering a normal view
         return $this->render('view', ['model' => $model]);
+    }
+
+    public function actionNewPermission()
+    {
+        // if(Yii::$app->request->isPjax)
+        // {
+            $model = new UserTypePermission();
+            
+            if($model->load(Yii::$app->request->post()) && $model->save())
+            {
+
+            }               
+        // }
+
+        return $this->redirect('/user/admin/types');
     }
 
     /**

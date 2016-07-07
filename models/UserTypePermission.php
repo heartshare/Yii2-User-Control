@@ -48,7 +48,11 @@ class UserTypePermission extends ActiveRecord
     public function rules()
     {
         return [
-        
+            'groupString'   => ['group', 'string', 'max' => 256],
+
+            'permissionString'  => ['permission', 'string', 'max' => 256],
+
+            'minUserTypeInteger' => ['min_user_type', 'integer'],
         ];
     }
 
