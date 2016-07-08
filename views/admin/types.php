@@ -81,7 +81,8 @@
         
         $model = new UserTypePermission();
 
-        echo "<p style='margin-bottom: 32px;'>To add a new user permission, please fill in the form below. All user types with a higher access level than the the type chosen below will also get the new permission.</p>";
+        echo "<p style='margin-bottom: 32px;'>To add a new user permission, please fill in the form below. 
+        All user types with a higher access level than the the type chosen below will also get the new permission.</p>";
 
         echo $form->field($model, 'group')->textInput(['maxlength' => 200]);
         echo $form->field($model, 'permission')->textInput(['maxlength' => 200]);
@@ -94,7 +95,12 @@
          
         ?><div class="form-group">
             <div class="col-lg-offset-3 col-sm-8 text-right"><?php
-                echo Html::submitButton(Yii::t('app', 'Update'), ['class' => 'btn btn-success']);
+                echo Html::submitButton(Yii::t('app', 'Update'), [
+                    'class' => 'btn btn-success pjax-submit',
+                    'data' => [
+                        'confirm' => 'Are you sure you want to add this permission? It cannot be removed later.'
+                    ]
+                ]);
             ?></div>
         </div><?php
 
@@ -108,10 +114,6 @@
 
     $this->registerJs(
        '$("document").ready(function(){ 
-            $("#new_permission").on("pjax:click", function() {
-                return confirm("Are you sure you want to add this permission? It cannot be removed later");
-            });
-
             $("#new_permission").on("pjax:end", function() {
                 $.pjax.reload({container:"#user-types-pjax"});  //Reload GridView
             });
@@ -130,7 +132,7 @@
 
     echo GridView::widget([
         'dataProvider'  => $dataProvider,
-        'filterModel'   => $searchModel,
+        // 'filterModel'   => $searchModel,
         'layout'        => "{items}\n{pager}",
         'columns'       => [
             // [
@@ -167,7 +169,10 @@
                         ],
                         'buttonsTemplate' => '{submit}',
                     ]);
-                }
+                },
+                'contentOptions' => [
+                    'style' => 'min-width: 150px;'
+                ]
             ],
             [
                 'attribute' => 'description'
@@ -187,7 +192,7 @@
             	},
             	'format' 	=> 'raw',
             	'contentOptions' => [
-            		'style' => 'width: 33%; min-width: 200px;'
+            		'style' => 'width: 45%; min-width: 200px;'
             	]	
             ]
         ]

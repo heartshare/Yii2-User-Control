@@ -30,6 +30,7 @@ class Bootstrap implements BootstrapInterface
     /** @var array Model's map */
     private $_modelMap = [
         'User'          => 'lnch\users\models\User',
+        'BaseUser'      => 'lnch\users\models\BaseUser',
         'Token'         => 'lnch\users\models\Token', 
         'Profile'       => 'lnch\users\models\Profile',  
         'UserType'      => 'lnch\users\models\UserType',          
@@ -78,6 +79,7 @@ class Bootstrap implements BootstrapInterface
                 Yii::$container->set('yii\web\User', [
                     'enableAutoLogin' => true,
                     'loginUrl'        => ['/user/security/login'],
+                    'class'           => $module->modelMap['BaseUser'],
                     'identityClass'   => $module->modelMap['User'],
                 ]);
 
