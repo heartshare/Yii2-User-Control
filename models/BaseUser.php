@@ -18,4 +18,9 @@ class BaseUser extends WebUser
         // Does the operation appear in the session?
         return ( new PermissionsManager() )->has( $operation );
     } 
+
+    public function has( $operation, $params = [], $allowCaching = true)
+    {
+    	return $this->can($operation, $params, $allowCaching);
+    }
 }

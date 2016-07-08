@@ -362,6 +362,13 @@ class AdminController extends Controller
         return $this->redirect('/user/admin/types');
     }
 
+    public function actionDeleteTypePermission()
+    {
+        $data = Yii::$app->request->post();
+        $perm = UserTypePermission::findOne(['group' => $data['group'], 'permission' => $data['permission']]);
+        $perm->delete();
+    }
+
     /**
      * Updates an existing profile.
      *

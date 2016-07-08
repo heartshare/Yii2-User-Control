@@ -39,89 +39,24 @@
 
     $this->beginContent('@lnch/users/views/admin/__template-types.php'); 
 
+
     echo $this->render('/_flash', [
         'module' => Yii::$app->getModule('user'),
     ]);
+
     
-    
+    if(Yii::$app->user->has("users:create-permission"))
+    {
+        echo $this->render("_new-permission");
 
-
-
-
-
-    ?><div class="text-right"><?php
-
-        Modal::begin([
-            'header' => 'Add a new permission',
-            'toggleButton' => [
-                'label' => 'New Permission',
-                'class' => 'btn btn-primary',
-                'style' => 'margin-bottom: 16px;'
-            ],
-        ]);
-
-        Pjax::begin([
-            'id' => 'new_permission',
-            'timeout' => 0,
-            'enablePushState' => false
-        ]);
-
-        $form = ActiveForm::begin([
-            'layout' => 'horizontal',
-            'options' => [
-                'data-pjax' => true 
-            ],
-            'action' => '/user/admin/new-permission',
-            'fieldConfig' => [
-                'horizontalCssClasses' => [
-                    'wrapper' => 'col-sm-8',
-                ],
-            ],
-        ]);
-        
-        $model = new UserTypePermission();
-
-        echo "<p style='margin-bottom: 32px;'>To add a new user permission, please fill in the form below. 
-        All user types with a higher access level than the the type chosen below will also get the new permission.</p>";
-
-        echo $form->field($model, 'group')->textInput(['maxlength' => 200]);
-        echo $form->field($model, 'permission')->textInput(['maxlength' => 200]);
-        echo $form->field($model, 'min_user_type')->dropDownList([
-            10 => 'User',
-            20 => 'Moderator',
-            30 => 'Administrator',
-            40 => 'Founder'
-        ]);
-         
-        ?><div class="form-group">
-            <div class="col-lg-offset-3 col-sm-8 text-right"><?php
-                echo Html::submitButton(Yii::t('app', 'Update'), [
-                    'class' => 'btn btn-success pjax-submit',
-                    'data' => [
-                        'confirm' => 'Are you sure you want to add this permission? It cannot be removed later.'
-                    ]
-                ]);
-            ?></div>
-        </div><?php
-
-        ActiveForm::end();
-            
-        Pjax::end();
-
-        Modal::end();
-
-    ?></div><?php
-
-    $this->registerJs(
-       '$("document").ready(function(){ 
-            $("#new_permission").on("pjax:end", function() {
-                $.pjax.reload({container:"#user-types-pjax"});  //Reload GridView
-            });
-        });'
-    );
-
-
-
+        $this->registerJs(
+           '$("document").ready(function(){ 
+                $("#new_permission").on("pjax:end", function() {
+                    $.pjax.reload({container:"#user-types-pjax"});  //Reload GridView
+                });
+            });'
+        );
+    }
 
 
     echo "<div class='table table-responsive'>";
@@ -132,7 +67,6 @@
 
     echo GridView::widget([
         'dataProvider'  => $dataProvider,
-        // 'filterModel'   => $searchModel,
         'layout'        => "{items}\n{pager}",
         'columns'       => [
             // [
@@ -185,7 +119,18 @@
 
             		foreach($model->permissions as $perm)
             		{
-            			$perms .= "<span class='user-type-permission'>" . $perm->group . " : " . $perm->permission . "</span>";
+            			$perms .= "<span class='user-type-permission'>" 
+                                    . $perm->group . " : " . $perm->permission;
+
+                        if(Yii::$app->user->identity->isFounder)
+                        {
+                            $perms .= "<span class='founder-delete-permission' 
+                                            data-group='".$perm->group."' 
+                                            data-permission='".$perm->permission."'
+                                            data-confirm='Are you sure?'>Delete</span>";
+                        }
+                        
+                        $perms .= "</span>";
             		}
 
             		return "<div class='permissions-container'>" . $perms . "</div>";
@@ -201,6 +146,57 @@
     Pjax::end(); 
 
     echo "</div>";
+
+    $this->registerJs(
+       '$("document").ready(function(){ 
+            
+            $("body").on("click", ".founder-delete-permission", function() {
+                
+                var group = $(this).data("group");
+                var permission = $(this).data("permission");
+
+                var okCallback = function()
+                {
+                    $.ajax({
+                        type: "POST",
+                        url: "/user/admin/delete-type-permission",
+                        data: {
+                            group: group,
+                            permission: permission
+                        },
+                        success: function()
+                        {
+                            $.pjax.reload({container:"#user-types-pjax"});  //Reload GridView
+                        },
+                        error: function(xhr){
+                            alert("An error occured: " + xhr.status + " " + xhr.statusText);
+                        },
+                    });
+                }
+
+                var cancelCallback = function() 
+                {
+                    
+                }
+
+                var options = {
+                    confirmButtonText:  "Delete",
+                    confirmButtonColor: "#c95c5c",
+
+                    cancelButtonText:   "Keep",
+
+                    html: true,
+                    showLoaderOnConfirm: true,
+                    closeOnConfirm: true
+                }
+
+                yii.confirm("Are you sure you want to delete the <strong>"+group+":"+permission+"</strong> permission from the system? This cannot be undone.", 
+                    okCallback, cancelCallback, options);
+
+            });
+
+        });'
+    );
 
     $this->endContent(); 
 

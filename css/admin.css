@@ -50,12 +50,39 @@
 }
 
 .user-type-permission {
+	position: relative;
 	display: inline-block;
 	font-size: 11px;
-	padding: 2px 5px;
+	padding: 2px 5px 4px 5px;
 	border-radius: 2px;
 	margin-right: 4px;
 	margin-bottom: 4px;
 	background: #828282;
 	color: white;
+	overflow: hidden;
+}
+
+.founder-delete-permission {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #c95c5c;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+    line-height: 20px;
+
+    visibility: hidden;
+    opacity: 0;
+
+    transition:			visibility 0s linear 0.3s, opacity 0.3s ease;
+    -moz-transition:	visibility 0s linear 0.3s, opacity 0.3s ease;
+    -webkit-transition:	visibility 0s linear 0.3s, opacity 0.3s ease;
+}
+
+.user-type-permission:hover .founder-delete-permission {
+	opacity: 1;
+	visibility: visible;
+	transition-delay: 0s;
 }
